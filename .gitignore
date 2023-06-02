@@ -1,5 +1,5 @@
 # etc ignore
-config.py
+settings.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
