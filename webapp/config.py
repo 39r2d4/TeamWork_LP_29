@@ -1,0 +1,3 @@
+from webapp.settings import DATABASE_URI
+
+SQLALCHEMY_DATABASE_URI = DATABASE_URI
