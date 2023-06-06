@@ -3,10 +3,13 @@ from flask_login import LoginManager, login_user
 from webapp.forms import LoginForm
 from webapp.model import db, User
 
+
+
 def create_app():
 
     app  = Flask(__name__)
     app.config.from_pyfile("config.py")
+
     db.init_app(app)
 
     login_manager = LoginManager()
@@ -29,15 +32,20 @@ def create_app():
         if request.method == "GET":
             login_form = LoginForm()
             return render_template("login.html", form=login_form)
+        
         elif request.method == "POST":
-            form = LoginForm()
-            if form.validate_on_submit():
-                user = User.query.filter_by(username=form.username.data).first()
-                print(user)
-                if user and user.check_password(form.password.data):
-                    login_user(user)
-                    flash('Успешная авторизация')
-                    return redirect(url_for("index"))
+            login_form = LoginForm()
+            if login_form.validate_on_submit():
+                try:
+                    user = User.query.filter_by(username=login_form.username.data).first()
+                    print(user)
+                    if user and user.check_password(login_form.password.data):
+                        login_user(user)
+                        flash('Успешная авторизация')
+                        return redirect(url_for("index"))
+                except: #"sqlalchemy.exc.OperationalError" Добавитть обработку ошибок алхимии (!!!)
+                    flash("БД недоступна, повторите попытку позже")
+                    return redirect(url_for("login"))
 
 
             flash("Не вернвый логин или пароль")
