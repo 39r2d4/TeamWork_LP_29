@@ -1,5 +1,4 @@
 from getpass import getpass
-import sys
 from webapp import db, create_app
 from webapp.model import db, User
 
@@ -7,27 +6,27 @@ from webapp.model import db, User
 
 app = create_app()
 
+def create_admin(user_name: str, password: str)-> None:
+    # c какой-то версии алхимия перестала принимать app в create_all() 
+    with app.app_context():
+        if User.query.filter(User.username == user_name).count():
+            print("Пользователь с таким именем существует!")
+            return
 
-# c какой-то версии алхимия перестала принимать app в create_all() 
-with app.app_context():
+        new_user = User(username = user_name, role= "Admin")
+        new_user.set_password(getpass1)
+
+        db.session.add(new_user)
+        db.session.commit()
+        print(f"Создан пользователь с {new_user.id}")
+
+
+
+if __name__ == "__main__":
     username = input("Введите имя: ")
-
-    if User.query.filter(User.username == username).count():
-        print("Пользователь с таким именем существует!")
-        sys.exit(0)
-    
-
     getpass1 = getpass("Введите пароль: ")
     getpass2 = getpass("Повторите ввод пароля: ")
-
-    if not getpass1 == getpass2:
-        print("Пароли не одинаковые!")
-        sys.exit(0)
-    
-    new_user = User(username = username, role= "Admin")
-    new_user.set_password(getpass1)
-
-    db.session.add(new_user)
-    db.session.commit()
-    print(f"Создан пользователь с {new_user.id}")
-    
+    if  getpass1 == getpass2:
+            create_admin(username, getpass1)
+    else:
+        print("Пароли не одинаковые! Попробуйте снова")

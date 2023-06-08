@@ -38,7 +38,6 @@ def create_app():
             if login_form.validate_on_submit():
                 try:
                     user = User.query.filter_by(username=login_form.username.data).first()
-                    print(user)
                     if user and user.check_password(login_form.password.data):
                         login_user(user)
                         flash('Успешная авторизация')
@@ -46,7 +45,6 @@ def create_app():
                 except: #"sqlalchemy.exc.OperationalError" Добавитть обработку ошибок алхимии (!!!)
                     flash("БД недоступна, повторите попытку позже")
                     return redirect(url_for("login"))
-
 
             flash("Не вернвый логин или пароль")
             return redirect(url_for("login"))
