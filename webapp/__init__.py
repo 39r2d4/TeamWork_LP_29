@@ -46,7 +46,7 @@ def create_app():
                     flash("БД недоступна, повторите попытку позже")
                     return redirect(url_for("login"))
 
-            flash("Не вернвый логин или пароль")
+            flash("Не правильный логин или пароль")
             return redirect(url_for("login"))
 
 
