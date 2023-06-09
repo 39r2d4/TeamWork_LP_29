@@ -12,14 +12,27 @@
 
 </head>
 <body>
-    <div class="content">
-    <div class="d-flex bd-highlight ">
+  <!-- навбар куданибудь сюда -->
+
+  <div class="content">
+   <div class="d-flex bd-highlight ">
   <div class="p-2 flex-fill bd-highlight">Шапка 1</div>
   <div class="p-2 flex-fill bd-highlight">Шапка 2</div>
   <div class="p-2 flex-fill bd-highlight">Шапка 3</div>
   <div class="p-2 flex-fill bd-highlight">Шапка 4</div>
   <div class="p-2 flex-fill bd-highlight"><a href={{ url_for("login") }}>Login</a></div>
     </div>
+    <!-- вывод flash сообщний -->
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <ul class=flashes>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    {% endwith %}
+    
       {% block content %} {% endblock %}
     </div>   
 
