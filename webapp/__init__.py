@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template, flash, url_for, redirect
-from flask_login import LoginManager, login_user
+from flask_login import current_user, LoginManager, login_user, ogout_user
 from webapp.forms import LoginForm
 from webapp.model import db, User
 
@@ -29,6 +29,7 @@ def create_app():
 
     @app.route("/login", methods=["POST", "GET"])
     def login():
+
         if request.method == "GET":
             login_form = LoginForm()
             return render_template("login.html", form=login_form)
@@ -42,12 +43,23 @@ def create_app():
                         login_user(user)
                         flash('Успешная авторизация')
                         return redirect(url_for("index"))
-                except: #"sqlalchemy.exc.OperationalError" Добавитть обработку ошибок алхимии (!!!)
+                except: #"sqlalchemy.exc.OperationalError" Добавить обработку ошибок алхимии (!!!)
                     flash("БД недоступна, повторите попытку позже")
                     return redirect(url_for("login"))
 
             flash("Не правильный логин или пароль")
             return redirect(url_for("login"))
 
+        if current_user.is_authenticated:
+            return(redirect(url_for("index")))
+        login_form = LoginForm()
+        return render_template("login.html", form=login_form)
+
+
+    app.route("/logout")
+    def logout():
+        logout_user()
+        flash("Вы вышли из системы")
+        return url_for("index")
 
     return app
