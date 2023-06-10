@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+            <form action="" method="post">
+                {{ deck_form.hidden_tag() }}
+            
+                <p>
+                    {{ deck_form.name.label }}
+                    {{ deck_form.name() }}
+                </p>
+                <p>
+                    {{ deck_form.comment.label }}
+                    {{ deck_form.comment() }}
+                </p>
+                <p>
+                    {{ deck_form.button() }}
+                </p>
+            </form>
+
+{% endblock content %}
+            

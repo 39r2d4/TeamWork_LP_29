@@ -20,5 +20,30 @@ class User(db.Model, UserMixin):
     
     def check_password(self, password):
         return check_password_hash(self.password, password)
+    
+    
+
+
+class CardType(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), index=True, unique=True)
+    description = db.Column(db.String(128))
+
+
+class Deck(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), index=True)
+    comment = db.Column(db.String(128))
+    user_id = db.Column(db.Integer)
+
+
+
+class Card(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    #side_1
+    #Side_2
+
+
+
 
 
