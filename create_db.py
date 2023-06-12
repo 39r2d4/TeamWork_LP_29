@@ -1,5 +1,5 @@
 from webapp import db, create_app
-from webapp.model import User
+#from webapp.model import User
 
 
 app = create_app()

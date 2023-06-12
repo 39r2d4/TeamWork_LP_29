@@ -14,11 +14,11 @@ def create_admin(user_name: str, password: str)-> None:
             return
 
         new_user = User(username = user_name, role= "Admin")
-        new_user.set_password(getpass1)
+        new_user.set_password(password)
 
         db.session.add(new_user)
         db.session.commit()
-        print(f"Создан пользователь с {new_user.id}")
+        print(f"Создан пользователь с ID {new_user.id}")
 
 
 

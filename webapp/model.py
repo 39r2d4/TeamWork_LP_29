@@ -1,15 +1,21 @@
 from flask_login import UserMixin
-from flask_sqlalchemy import SQLAlchemy 
+from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
+ 
 
 db = SQLAlchemy()
 
 
 class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), index=True, unique=True)
-    password = db.Column(db.String(128))
-    role = db.Column(db.String, nullable=False)
+    __tablename__ = "user_teble"
+    id: db.Mapped[int] = db.mapped_column(db.Integer, primary_key=True)
+    #id = db.Column(db.Integer, primary_key=True)
+    username: db.Mapped[str] = db.mapped_column(db.String(64), index=True, unique=True)
+    password: db.Mapped[str] = db.mapped_column(db.String(128))
+    role: db.Mapped[str] = db.mapped_column(db.String, nullable=False)
+
+    deck: db.Mapped[list["Deck"]] = db.relationship()
+    card: db.Mapped[list["Card"]] = db.relationship()
 
 
     def __repr__(self):
@@ -20,30 +26,48 @@ class User(db.Model, UserMixin):
     
     def check_password(self, password):
         return check_password_hash(self.password, password)
-    
-    
-
-
-class CardType(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), index=True, unique=True)
-    description = db.Column(db.String(128))
 
 
 class Deck(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), index=True)
-    comment = db.Column(db.String(128))
-    user_id = db.Column(db.Integer)
+    __tablename__ = "deck_table"
+    id: db.Mapped[int] = db.mapped_column(db.Integer, primary_key=True)
+    name: db.Mapped[str] = db.mapped_column(db.String(64), index=True)
+    comment: db.Mapped[str] = db.mapped_column(db.String(128))
+    user_id: db.Mapped[int] = db.mapped_column(db.ForeignKey("user_teble.id"), index=True)
+    
+    user: db.Mapped["User"] = db.relationship(back_populates= "deck")
+    card: db.Mapped[list["Card"]] = db.relationship(back_populates="deck")
 
+    def __repr_(self):
+        return f"Deck id: {self.id}, name: {self.name}"
 
+class CardType(db.Model):
+    __tablename__ = "CardType_table"
+    id: db.Mapped[int] = db.mapped_column(db.Integer, primary_key=True)
+    name: db.Mapped[str] = db.mapped_column(db.String(64), index=True, unique=True)
+    description: db.Mapped[str] = db.mapped_column(db.String(128))
+    
+    card: db.Mapped[list["Card"]] = db.relationship()
+    
+    def __repr_(self):
+        return f"CardType id: {self.id}, name: {self.name}"
 
 class Card(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    #side_1
-    #Side_2
+    __tablename__ = "Card_table"
+    id: db.Mapped[int] = db.mapped_column(db.Integer, primary_key=True)
+    side_1: db.Mapped[str] = db.mapped_column(db.String(256))
+    side_2: db.Mapped[str] = db.mapped_column(db.String(256))
+    deck_id: db.Mapped[int] = db.mapped_column(db.ForeignKey("deck_table.id"), index=True)
+    is_active: db.Mapped[bool] = db.mapped_column()
+    tags: db.Mapped[str] = db.mapped_column(db.String(256))
+    cardtype_id: db.Mapped[int] = db.mapped_column(db.ForeignKey("CardType_table.id"), index=True)
+    user_id: db.Mapped[int] = db.mapped_column(db.ForeignKey("user_teble.id"), index=True)
+
+    user: db.Mapped["User"] = db.relationship(back_populates= "card")
+
+    deck: db.Mapped["Deck"] = db.relationship(back_populates="card")
 
 
-
-
-
+    def __repr_(self):
+        return f"Card id: {self.id}, side_1: {self.side_1}"
+ 
