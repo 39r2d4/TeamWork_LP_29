@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template, flash, url_for, redirect
-from flask_login import current_user, LoginManager, login_user, ogout_user
+from flask_login import current_user, LoginManager, login_user, logout_user
 from webapp.forms import LoginForm
 from webapp.model import db, User
 
@@ -56,8 +56,8 @@ def create_app():
         return render_template("login.html", form=login_form)
 
 
-    app.route("/logout")
-    def logout():
+    @app.route("/logout")
+    def logout(): #нет проверки на то, что пользователь авторизован, нудо добавить (!!!)
         logout_user()
         flash("Вы вышли из системы")
         return url_for("index")
