@@ -131,15 +131,48 @@ def create_app():
         try:
             deck_form = DeckForm()
             if deck_form.validate_on_submit():
+                    #Добавить проверку на дубль названия колоды(!!!)
                     new_deck = Deck(name=deck_form.name.data, comment=deck_form.comment.data, user_id=current_user.id)
                     db.session.add(new_deck)
                     db.session.commit()
                     flash(f"Колода {deck_form.name.data} создана")
 
                  
-            return render_template("deck.html", deck_form=deck_form)
+            return render_template("deck/add_new_deck.html", deck_form=deck_form)
         except(OperationalError):
             flash(OPERATIONALERROR_TEXT)
             return(OPERATIONALERROR_TEXT)
+        
+    @app.route("/deck/view")
+    @login_required
+    def decks_view():
+        try:
+            deks_to_teamplate = []
+            for deck in current_user.deck:
+                deck_dickt = {}
+                deck_dickt["id"] = deck.id
+                deck_dickt["name"] = deck.name
+                deck_dickt["comment"] = deck.comment
+                deck_dickt["card_count"] = len(deck.card)
+                deks_to_teamplate.append(deck_dickt)
+        except(OperationalError):
+            flash(OPERATIONALERROR_TEXT)
+            return(OPERATIONALERROR_TEXT)
+            
+
+
+        return render_template("deck/decks_view.html", decks=deks_to_teamplate) 
+
+
+
+
+    @app.route("/deck/view/<int:deck_id>")
+    @login_required
+    def deck_view(deck_id):
+        #СДЕЛАТЬ (!!!) если автор колоды == current_user тогда показываекм колоду 
+        return f"deck_ID: {deck_id}" 
+
+
+
 
     return app
