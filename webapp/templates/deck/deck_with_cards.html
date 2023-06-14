@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="d-flex justify-content-center">
+</div>
+
+
+<div class="card text-center">
+    <div class="card-header">
+        !Еще не придумал что сюда добавить!
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">{{ deck.name }}</h5>
+        <p class="card-text">{{ deck.comment }}</p>
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary">Повторять карточки!!!</button>
+            <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                <span class="visually-hidden">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Редактировать колоду</a></li>
+                <li><a class="dropdown-item" href="#">Сделать что-то еще</a></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="#">Загрузить\выгрузить</a></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="#">Статистика</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="card-footer text-body-secondary">
+        Последняя активность %% дней назад
+    </div>
+</div>
+<!--cards-->
+<div class="list-group">
+    {% for card in deck.card: %}
+    <a href="/" class="list-group-item list-group-item-action">
+        <div class=" d-flex w-100 justify-content-between">
+            <div>
+                <h5 class="mb-1">{{card.side_1}}</h5>
+                <p class="mb-1">{{card.tags}}</p>
+            </div>
+            <div>
+                <small>{{ card.card_type.name}}</small>
+                <small>{{ card.is_active }}</small>
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+
+{% endblock content %}

@@ -120,14 +120,14 @@ def create_app():
             card_form.type.choices = card_types
             
             return render_template("card_form.html", card_form = card_form) 
-        except(OperationalError):
+        except:
             flash(OPERATIONALERROR_TEXT)
             return(OPERATIONALERROR_TEXT)
 
 
     @app.route("/deck/new", methods=["POST", "GET"])
     @login_required
-    def dack_new():
+    def deck_new():
         try:
             deck_form = DeckForm()
             if deck_form.validate_on_submit():
@@ -169,9 +169,17 @@ def create_app():
     @app.route("/deck/view/<int:deck_id>")
     @login_required
     def deck_view(deck_id):
-        #СДЕЛАТЬ (!!!) если автор колоды == current_user тогда показываекм колоду 
-        return f"deck_ID: {deck_id}" 
-
+        try:
+            deck = db.session.scalars(db.select(Deck).filter_by(id=deck_id)).first()
+            if deck.user_id == current_user.id:
+                #пока без пагинации
+                return render_template("deck/deck_with_cards.html", deck=deck)
+                #return f"deck_ID: {deck_id} | {deck.name}| User_id: {deck.user_id}" 
+            flash("Это не ваша колода")
+            return(redirect(url_for("decks_view")))
+        except(OperationalError):
+            flash(OPERATIONALERROR_TEXT)
+            return(OPERATIONALERROR_TEXT)
 
 
 

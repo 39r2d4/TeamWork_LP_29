@@ -47,7 +47,7 @@ class CardType(db.Model):
     name: db.Mapped[str] = db.mapped_column(db.String(64), index=True, unique=True)
     description: db.Mapped[str] = db.mapped_column(db.String(128))
     
-    card: db.Mapped[list["Card"]] = db.relationship()
+    card: db.Mapped[list["Card"]] = db.relationship(back_populates="card_type")
     
     def __repr__(self):
         return f"CardType id: {self.id}, name: {self.name}"
@@ -63,9 +63,10 @@ class Card(db.Model):
     cardtype_id: db.Mapped[int] = db.mapped_column(db.ForeignKey("CardType_table.id"), index=True)
     user_id: db.Mapped[int] = db.mapped_column(db.ForeignKey("user_teble.id"), index=True)
 
+    card_type: db.Mapped["CardType"] = db.relationship()
+    deck: db.Mapped["Deck"] = db.relationship(back_populates="card")
     user: db.Mapped["User"] = db.relationship(back_populates= "card")
 
-    deck: db.Mapped["Deck"] = db.relationship(back_populates="card")
 
 
     def __repr__(self):
