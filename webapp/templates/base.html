@@ -17,7 +17,17 @@
   <div class="content">
    <div class="d-flex bd-highlight ">
   <div class="p-2 flex-fill bd-highlight">Шапка 1</div>
-  <div class="p-2 flex-fill bd-highlight">Шапка 2</div>
+  <div class="p-2 flex-fill bd-highlight">
+    <div class="btn-group">
+      <button type="button" class="btn btn-primary"><a href={{ url_for("decks_view") }} class="link-light" > Колоды </a></button>
+      <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+        <span class="visually-hidden">Toggle Dropdown</span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href={{ url_for("deck_new") }} >Добавить колоду</a></li>
+      </ul>
+    </div>
+  </a></div>
   <div class="p-2 flex-fill bd-highlight"><a href={{ url_for("logout") }}>Выйти</a></div>
   <div class="p-2 flex-fill bd-highlight"><a href={{ url_for("create_card") }}>Создать карточку</a></div>
   <div class="p-2 flex-fill bd-highlight"><a href={{ url_for("login") }}>Login</a></div>
