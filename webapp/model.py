@@ -9,7 +9,6 @@ db = SQLAlchemy()
 class User(db.Model, UserMixin):
     __tablename__ = "user_teble"
     id: db.Mapped[int] = db.mapped_column(db.Integer, primary_key=True)
-    #id = db.Column(db.Integer, primary_key=True)
     username: db.Mapped[str] = db.mapped_column(db.String(64), index=True, unique=True)
     password: db.Mapped[str] = db.mapped_column(db.String(128))
     role: db.Mapped[str] = db.mapped_column(db.String, nullable=False)
