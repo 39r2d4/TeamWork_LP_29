@@ -112,9 +112,6 @@ def create_app():
 
             card_types = []
             for card_type in db.session.scalars(db.select(CardType).order_by(CardType.id)).all():   
-                # db.session.execute(db.select(CardType).order_by(CardType.id)).all(): # получает значения строками
-                # CardType.query.order_by(CardType.id).all(): #старый метод описания запроса
-                # https://docs.sqlalchemy.org/en/20/orm/queryguide/select.html#selecting-orm-entities
                 card_types.append((card_type.id, card_type.name))
             
             card_form.deck.choices = decks
