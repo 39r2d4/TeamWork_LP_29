@@ -1,4 +1,4 @@
-#mock data to test
+"""This module contains mock data to test.""""
 
 
 m_card_type = [(1, 'Обачная карточка'), (2, 'Викторина'), (3, 'С обоатной по выбору')]
