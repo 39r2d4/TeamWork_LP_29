@@ -100,11 +100,6 @@ def create_app():
 
                    flash(f"Карточка ID: {new_card.id}, сторона_1: {new_card.side_1}  создана")
                    return redirect(url_for("create_card"))
-
-                #    return f"Text side_1: {card_form.side_1.data}, \n \
-                #             Text side_2: {card_form.side_2.data} \n \
-                #             Колода: {card_form.deck.data}, \n \
-                #             Тип карточки: {card_form.type.data},"
             
             decks = []
             for deck in current_user.deck:
