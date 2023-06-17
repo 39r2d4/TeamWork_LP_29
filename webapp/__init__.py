@@ -8,7 +8,7 @@ from webapp.model import db, User, Deck, Card, CardType
 
 from webapp.config import OPERATIONALERROR_TEXT
 
-#from webapp.mock import m_card_type, m_deck
+
 
 
 def create_app():
