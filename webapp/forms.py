@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import Form, FieldList, StringField, PasswordField, SubmitField, TextAreaField, BooleanField, SelectField
 from wtforms.validators import DataRequired
 
 
@@ -7,4 +7,25 @@ class LoginForm(FlaskForm):
     username = StringField("Имя пользователя", validators=[DataRequired()], render_kw={"class": "form-control"})
     password = PasswordField("Пароль", validators=[DataRequired()], render_kw={"class": "form-control"})
     button = SubmitField("Войти", render_kw={"class": "btn btn-primary"})
+
+
+class CardType(FlaskForm):
+    name = StringField("Название типа карточки")
+    description = StringField("Описание")
+
+class CardForm(FlaskForm):
+    side_1 = TextAreaField("Текст стороны 1", validators=[DataRequired()], render_kw={"class": "form-control"})
+    side_2 = TextAreaField("Текст стороны 2", validators=[DataRequired()],render_kw={"class": "form-control"})
+    deck = SelectField("Колода",choices=[], coerce=int, render_kw={"class": "form-control"}, validate_choice=False) #передавать в форму список колод на выбор
+    is_active = BooleanField("Карточка активна", render_kw={"class": "form-check-input", "type": "checkbox"})
+    tags = StringField("Метка", validators=[DataRequired()],render_kw={"class": "form-control"})
+    type = SelectField("Тип карточки",choices=[] , coerce=int, render_kw={"class": "form-control"}, validate_choice=False)#!!!
+    buttom = SubmitField("Сохранить", render_kw={"class": "btn btn-primary"})
+
+
+
+class DeckForm(FlaskForm):
+    name = StringField("Название колоды", validators=[DataRequired()], render_kw={"class": "form-control"})
+    comment = StringField("Комментарий колоды", render_kw={"class": "form-control"})
+    button = SubmitField("Сохранить", render_kw={"class": "btn btn-primary"})
 
