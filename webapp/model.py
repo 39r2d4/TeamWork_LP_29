@@ -38,6 +38,7 @@ class Deck(db.Model):
     user: db.Mapped["User"] = db.relationship(back_populates= "deck")
     card: db.Mapped[list["Card"]] = db.relationship(back_populates="deck")
 
+
     def __repr__(self):
         return f"Deck id: {self.id}, name: {self.name}"
 
@@ -66,7 +67,6 @@ class Card(db.Model):
     card_type: db.Mapped["CardType"] = db.relationship()
     deck: db.Mapped["Deck"] = db.relationship(back_populates="card")
     user: db.Mapped["User"] = db.relationship(back_populates= "card")
-
 
 
     def __repr__(self):

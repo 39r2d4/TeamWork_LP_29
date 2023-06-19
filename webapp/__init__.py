@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, flash, url_for, redirect
 from flask_login import current_user, LoginManager, login_user, logout_user, login_required
 from flask_migrate import Migrate
 from sqlalchemy.exc import OperationalError
+
 from webapp.forms import BaseCardForm, DeckForm, LoginForm, NewCardForm
 from webapp.model import db, User, Deck, Card, CardType
 
@@ -100,10 +101,6 @@ def create_app():
                    flash(f"Карточка ID: {new_card.id}, сторона_1: {new_card.side_1}  создана")
                    return redirect(url_for("create_card"))
 
-                #    return f"Text side_1: {card_form.side_1.data}, \n \
-                #             Text side_2: {card_form.side_2.data} \n \
-                #             Колода: {card_form.deck.data}, \n \
-                #             Тип карточки: {card_form.type.data},"
             
             decks = []
             for deck in current_user.deck:
@@ -111,9 +108,6 @@ def create_app():
 
             card_types = []
             for card_type in db.session.scalars(db.select(CardType).order_by(CardType.id)).all():   
-                # db.session.execute(db.select(CardType).order_by(CardType.id)).all(): # получает значения строками
-                # CardType.query.order_by(CardType.id).all(): #старый метод описания запроса
-                # https://docs.sqlalchemy.org/en/20/orm/queryguide/select.html#selecting-orm-entities
                 card_types.append((card_type.id, card_type.name))
             
             card_form.deck.choices = decks
