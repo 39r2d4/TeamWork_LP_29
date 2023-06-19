@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="d-flex justify-content-end""> 
+</div>
+    <div class="list-group">
+        {% for deck in decks: %}
+        <a href={{ url_for("deck_view", deck_id=deck.id) }} class="list-group-item list-group-item-action"">
+            <div class="d-flex w-100 justify-content-between">
+                <h4 class="mb-1">{{deck.name}}</h4>
+                <small>{{ deck.card_count }}</small>
+            </div>
+            <p class="mb-1">{{deck.comment}}</p>
+        </a>
+        {% endfor %}
+    </div>
+ 
+{% endblock content %}
+
