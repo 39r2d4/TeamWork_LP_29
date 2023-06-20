@@ -3,12 +3,13 @@ from flask_login import current_user, LoginManager, login_user, logout_user, log
 from flask_migrate import Migrate
 from sqlalchemy.exc import OperationalError
 
-from webapp.forms import BaseCardForm, DeckForm, LoginForm, NewCardForm
+from webapp.forms import BaseCardForm, DeckForm, LoginForm, NewCardForm, StudyForm
 from webapp.model import db, User, Deck, Card, CardType
 
 from webapp.config import OPERATIONALERROR_TEXT
 
 from webapp.mock import m_card_type, m_deck
+import random
 
 
 def create_app():
@@ -124,8 +125,7 @@ def create_app():
     @login_required
     def edit_card(card_id):
         try:
-            card = db.session.scalars(db.select(Card).filter_by(id = card_id)).first()
-                #db.session.scalars(db.select(Deck).filter_by(id=deck_id)).first()
+            card = db.session.scalars(db.select(Card).filter_by(id=card_id)).first()
             if card and card.user.id == current_user.id:
                 card_form = BaseCardForm()
                 if card_form.validate_on_submit():
@@ -213,9 +213,25 @@ def create_app():
             if deck.user_id == current_user.id:
                 #пока без пагинации
                 return render_template("deck/deck_with_cards.html", deck=deck)
-                #return f"deck_ID: {deck_id} | {deck.name}| User_id: {deck.user_id}" 
             flash("Это не ваша колода")
             return(redirect(url_for("decks_view")))
+        except(OperationalError):
+            flash(OPERATIONALERROR_TEXT)
+            return(OPERATIONALERROR_TEXT)
+        
+
+    @app.route("/deck/study/<int:deck_id>")
+    @login_required
+    def deck_study(deck_id):
+        try:
+            deck = db.session.scalars(db.select(Deck).filter_by(id=deck_id)).first()
+            if deck.user_id == current_user.id:
+                #будем доставать карты у которых некий показатель самый большой\маленткий (тот самый вес)
+                #для проверки интерфейса будем доставать что попало
+                random_card = deck.card[random.randint(0, len(deck.card))]
+                study_form = StudyForm(cad_id=random_card)
+
+                return render_template("deck/study/study_deck.html", card=random_card, study_form=study_form)
         except(OperationalError):
             flash(OPERATIONALERROR_TEXT)
             return(OPERATIONALERROR_TEXT)

@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import Form, FieldList, StringField, PasswordField, SubmitField, TextAreaField, BooleanField, SelectField
+from wtforms import Form, FieldList, StringField, PasswordField, SubmitField, TextAreaField, BooleanField, SelectField, IntegerField
 from wtforms.validators import DataRequired
 
 
@@ -21,7 +21,7 @@ class BaseCardForm(FlaskForm): #CardForm(FlaskForm):
     is_active = BooleanField("Карточка активна", render_kw={"class": "form-check-input", "type": "checkbox"})
     tags = StringField("Метка", validators=[DataRequired()],render_kw={"class": "form-control"})
     type = SelectField("Тип карточки",choices=[] , coerce=int, render_kw={"class": "form-control"}, validate_choice=False)#!!!
-    buttom = SubmitField("Сохранить", render_kw={"class": "btn btn-primary"})
+    button = SubmitField("Сохранить", render_kw={"class": "btn btn-primary"})
 
 
 class NewCardForm(BaseCardForm):
@@ -32,4 +32,10 @@ class DeckForm(FlaskForm):
     name = StringField("Название колоды", validators=[DataRequired()], render_kw={"class": "form-control"})
     comment = StringField("Комментарий колоды", render_kw={"class": "form-control"})
     button = SubmitField("Сохранить", render_kw={"class": "btn btn-primary"})
+
+
+class StudyForm(FlaskForm):
+    cad_id = StringField("ID карты", validators=[DataRequired()])
+    hurd_button = SubmitField("сложна")
+    norm_button = SubmitField("Норм")
 

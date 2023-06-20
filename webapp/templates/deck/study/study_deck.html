@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+{{ study_form.hidden_tag() }}
+
+<script>
+function unhide() {
+   hiden_elem = document.querySelector("div#uniwue_id_to_hidden")
+   hiden_elem.classList.remove('visually-hidden')
+   visible_elem = document.querySelector("button#uniwue_id_to_visible")
+   visible_elem.classList.add('visually-hidden')
+}
+
+</script>
+<H1>{{card.side_1}}</H1>
+
+
+<button type="button" id="uniwue_id_to_visible" onclick="unhide()" class="btn btn-dark">Показать</button>
+<form action="" method="post">
+    {{study_form.hurd_button()}}
+    {{study_form.norm_button()}}
+</form>
+
+<div class="visually-hidden" id="uniwue_id_to_hidden">
+    <ul>
+        <h1>{{card.side_2}}</h1>
+    </ul>
+    <ul>
+
+    </ul>
+    <ul>
+    <div class="btn-group" role="group">
+        <button type="button" class="btn btn-danger">Сложно</button>
+        <button type="button" class="btn btn-warning">Обычно</button>
+        <button type="button" class="btn btn-success">Легко</button>
+    </div>
+    <ul>
+</div>
+    {% endblock content %}
