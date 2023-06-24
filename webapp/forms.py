@@ -36,6 +36,7 @@ class DeckForm(FlaskForm):
 
 class StudyForm(FlaskForm):
     cad_id = StringField("ID карты", validators=[DataRequired()])
-    hurd_button = SubmitField("сложна")
-    norm_button = SubmitField("Норм")
+    hurd_button = SubmitField("сложна", render_kw={"class":"btn btn-danger"})
+    norm_button = SubmitField("Норм", render_kw={"class":"btn btn-warning"})
+    easy_button = SubmitField("лкгко", render_kw={"class":"btn btn-success"})
 

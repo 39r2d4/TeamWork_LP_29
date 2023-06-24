@@ -9,7 +9,6 @@ db = SQLAlchemy()
 class User(db.Model, UserMixin):
     __tablename__ = "user_teble"
     id: db.Mapped[int] = db.mapped_column(db.Integer, primary_key=True)
-    #id = db.Column(db.Integer, primary_key=True)
     username: db.Mapped[str] = db.mapped_column(db.String(64), index=True, unique=True)
     password: db.Mapped[str] = db.mapped_column(db.String(128))
     role: db.Mapped[str] = db.mapped_column(db.String, nullable=False)
@@ -63,7 +62,8 @@ class Card(db.Model):
     tags: db.Mapped[str] = db.mapped_column(db.String(256))
     cardtype_id: db.Mapped[int] = db.mapped_column(db.ForeignKey("CardType_table.id"), index=True)
     user_id: db.Mapped[int] = db.mapped_column(db.ForeignKey("user_teble.id"), index=True)
-
+    weights:db.Mapped[int] = db.mapped_column(db.Integer())
+    
     card_type: db.Mapped["CardType"] = db.relationship()
     deck: db.Mapped["Deck"] = db.relationship(back_populates="card")
     user: db.Mapped["User"] = db.relationship(back_populates= "card")

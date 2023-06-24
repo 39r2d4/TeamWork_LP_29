@@ -94,7 +94,8 @@ def create_app():
                         is_active=card_form.is_active.data, 
                         tags=card_form.tags.data, 
                         cardtype_id=card_form.type.data,
-                        user_id = current_user.id)
+                        user_id = current_user.id,
+                        weights = 500)
                    
                    db.session.add(new_card)
                    db.session.commit()
@@ -220,17 +221,24 @@ def create_app():
             return(OPERATIONALERROR_TEXT)
         
 
-    @app.route("/deck/study/<int:deck_id>")
+    @app.route("/deck/study/<int:deck_id>", methods=["POST", "GET"])
     @login_required
     def deck_study(deck_id):
         try:
             deck = db.session.scalars(db.select(Deck).filter_by(id=deck_id)).first()
             if deck.user_id == current_user.id:
+                random_card = deck.card[random.randint(0, len(deck.card)-1)]
+                study_form = StudyForm(cad_id=random_card.id)
+                if study_form.validate_on_submit():
+                    print(f"study_form.cad_id:{study_form.cad_id.data},\
+\n study_form.hurd_button:{study_form.hurd_button.data}, \
+\n study_form.norm_button:{study_form.norm_button.data}, \
+\n study_form.easy_button:{study_form.easy_button.data}")
+                    
+                    
+                    return render_template("deck/study/study_deck.html", card=random_card, study_form=study_form)
                 #будем доставать карты у которых некий показатель самый большой\маленткий (тот самый вес)
                 #для проверки интерфейса будем доставать что попало
-                random_card = deck.card[random.randint(0, len(deck.card))]
-                study_form = StudyForm(cad_id=random_card)
-
                 return render_template("deck/study/study_deck.html", card=random_card, study_form=study_form)
         except(OperationalError):
             flash(OPERATIONALERROR_TEXT)

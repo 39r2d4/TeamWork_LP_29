@@ -5,7 +5,7 @@ from create_admin import create_admin
 if __name__ == "__main__":
    card_types = [{"name": "Обачная карточка_fromDB", "description": "Базовая карточка(описание1)"},
                {"name": "Викторина_fromDB", "description": "выюрать ответ из предложеных вариантов"}, 
-               {"name": "С обоатной по выбору_fromDB", "description": "создается 2 связанных карточки"},  ]
+               {"name": "С обратной по выбору_fromDB", "description": "создается 2 связанных карточки"},  ]
 
 
    app = create_app()
