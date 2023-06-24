@@ -70,5 +70,5 @@ class Card(db.Model):
 
 
     def __repr__(self):
-        return f"Card id: {self.id}, side_1: {self.side_1}"
+        return f"Card id: {self.id}, side_1: {self.side_1}, weights: {self.weights}\n"
  
