@@ -1,39 +1,50 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head >
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
+
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <title>Ресурс для изучения</title>
-
-
-</head>
-<body>
-  <!-- навбар куданибудь сюда -->
-
-  <div class="content">
-   <div class="d-flex bd-highlight ">
-  <div class="p-2 flex-fill bd-highlight">Шапка 1</div>
-  <div class="p-2 flex-fill bd-highlight">
-    <div class="btn-group">
-      <button type="button" class="btn btn-primary"><a href={{ url_for("decks_view") }} class="link-light" > Колоды </a></button>
-      <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-        <span class="visually-hidden">Toggle Dropdown</span>
-      </button>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href={{ url_for("deck_new") }} >Добавить колоду</a></li>
-      </ul>
-    </div>
-  </a></div>
-  <div class="p-2 flex-fill bd-highlight"><a href={{ url_for("logout") }}>Выйти</a></div>
-  <div class="p-2 flex-fill bd-highlight"><a href={{ url_for("create_card") }}>Создать карточку</a></div>
-  <div class="p-2 flex-fill bd-highlight"><a href={{ url_for("login") }}>Login</a></div>
-    </div>
-    <!-- вывод flash сообщний -->
-    {% with messages = get_flashed_messages() %}
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">NotAnki</a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href='{{ url_for("decks_view") }}' role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Колоды
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href='{{ url_for("deck_new") }}'>Создать колоду</a></li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href='{{ url_for("create_card") }}'>Создать карточку</a>
+            </li>
+          </ul>
+          <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="Search for a deck" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+          <ul class="navbar-nav mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href='{{ url_for("login") }}'>Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href='{{ url_for("logout") }}'>Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+       <!-- вывод flash сообщний -->
+      <!-- раскомментирую, когда придумаю, где лучше использовать -->
+      <!--{% with messages = get_flashed_messages() %}
       {% if messages %}
       <ul class=flashes>
         {% for message in messages %}
@@ -41,16 +52,11 @@
         {% endfor %}
       </ul>
       {% endif %}
-    {% endwith %}
-    
-      {% block content %} {% endblock %}
-    </div>   
-
-    
+      {% endwith %}
+      {% block content %} {% endblock %}-->
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
   </body>
-</body>
 </html>
