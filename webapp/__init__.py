@@ -3,7 +3,7 @@ from flask_login import current_user, LoginManager, login_user, logout_user, log
 from flask_migrate import Migrate
 from sqlalchemy.exc import OperationalError
 
-from webapp.forms import BaseCardForm, DeckForm, LoginForm, NewCardForm
+from webapp.forms import BaseCardForm, DeckForm, LoginForm, NewCardForm, SignupForm
 from webapp.model import db, User, Deck, Card, CardType
 
 from webapp.config import OPERATIONALERROR_TEXT
@@ -67,7 +67,26 @@ def create_app():
             flash(OPERATIONALERROR_TEXT)
             return(OPERATIONALERROR_TEXT)
 
+    @app.route('/signup')
+    def signup():
+        if current_user.is_authenticated:
+            return redirect(url_for("index"))
+        title = 'Регистрация'
+        signup_form = SignupForm()
+        return render_template('signup.html', page_title=title, form=signup_form)
 
+    @app.route('/process-signup', methods=['POST'])
+    def process_signup():
+        signup_form = SignupForm()
+        if signup_form.validate_on_submit():
+            new_user = User(username=signup_form.username.data, email=signup_form.email.data, role='user')
+            new_user.set_password(signup_form.password.data)
+            db.session.add(new_user)
+            db.session.commit()
+            flash("Вы успешно зарегистрировались")
+            return redirect(url_for('login'))
+        flash('пожалуйста, исправьте ошибки в форме')
+        return redirect(url_for('signup'))
     @app.route("/logout")
     @login_required
     def logout():

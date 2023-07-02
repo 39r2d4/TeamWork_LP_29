@@ -13,7 +13,7 @@ def create_admin(user_name: str, password: str)-> None:
             print("Пользователь с таким именем существует!")
             return
 
-        new_user = User(username = user_name, role= "Admin")
+        new_user = User(username = user_name, role= "Admin", email='default@example.com')
         new_user.set_password(password)
 
         db.session.add(new_user)
