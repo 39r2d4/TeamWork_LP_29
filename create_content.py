@@ -1,6 +1,6 @@
 from webapp import db, create_app
 from webapp.model import CardType
-from create_admin import create_admin
+
 
 if __name__ == "__main__":
    card_types = [{"name": "Обачная карточка_fromDB", "description": "Базовая карточка(описание1)"},
@@ -15,5 +15,3 @@ if __name__ == "__main__":
       db.session.bulk_insert_mappings(CardType, card_types, return_defaults=True)
       db.session.commit()
       print(card_types)
-
-   #create_admin("admin", "123", "example@exapple.com")
