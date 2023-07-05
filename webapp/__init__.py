@@ -3,12 +3,12 @@ from flask_login import current_user, LoginManager, login_user, logout_user, log
 from flask_migrate import Migrate
 from sqlalchemy.exc import OperationalError
 
+
 from webapp.forms import BaseCardForm, DeckForm, LoginForm, NewCardForm, SignupForm
 from webapp.model import db, User, Deck, Card, CardType
-
 from webapp.config import OPERATIONALERROR_TEXT
-
 from webapp.mock import m_card_type, m_deck
+import random
 
 
 def create_app():
@@ -94,7 +94,7 @@ def create_app():
             logout_user()
             flash("Вы вышли из системы")
             return redirect(url_for("index"))
-        except(OperationalError):# не работает на функциях с @login_required
+        except(OperationalError):
             flash(OPERATIONALERROR_TEXT)
             return(OPERATIONALERROR_TEXT)            
 
@@ -112,7 +112,8 @@ def create_app():
                         is_active=card_form.is_active.data, 
                         tags=card_form.tags.data, 
                         cardtype_id=card_form.type.data,
-                        user_id = current_user.id)
+                        user_id = current_user.id,
+                        weights = 500)
                    
                    db.session.add(new_card)
                    db.session.commit()
@@ -143,14 +144,12 @@ def create_app():
     @login_required
     def edit_card(card_id):
         try:
-            card = db.session.scalars(db.select(Card).filter_by(id = card_id)).first()
-                #db.session.scalars(db.select(Deck).filter_by(id=deck_id)).first()
+            card = db.session.scalars(db.select(Card).filter_by(id=card_id)).first()
             if card and card.user.id == current_user.id:
                 card_form = BaseCardForm()
                 if card_form.validate_on_submit():
                     card.side_1 = card_form.side_1.data
                     card.side_2 = card_form.side_2.data
-                    #deck_id = card_form.deck.data 
                     card.is_active = card_form.is_active.data 
                     card.tags = card_form.tags.data
                     card.cardtype_id = card_form.type.data
@@ -232,9 +231,47 @@ def create_app():
             if deck.user_id == current_user.id:
                 #пока без пагинации
                 return render_template("deck/deck_with_cards.html", deck=deck)
-                #return f"deck_ID: {deck_id} | {deck.name}| User_id: {deck.user_id}" 
             flash("Это не ваша колода")
             return(redirect(url_for("decks_view")))
+        except(OperationalError):
+            flash(OPERATIONALERROR_TEXT)
+            return(OPERATIONALERROR_TEXT)
+        
+
+    @app.route("/deck/study/<int:deck_id>", methods=["GET"])
+    @login_required
+    def deck_study(deck_id):
+        try:
+            deck = db.session.scalars(db.select(Deck).filter_by(id=deck_id)).first()
+            if deck.user_id == current_user.id:
+                card_with_max_weights = db.session.scalars(db.select(Card).filter_by(deck_id=deck_id).filter_by(user_id=current_user.id).order_by(-Card.weights).limit(5)).all()
+                random_card = card_with_max_weights[random.randint(0, len(card_with_max_weights)-1)]
+                study_form = StudyForm(cad_id=random_card.id)
+                return render_template("deck/study/study_deck.html", card=random_card, study_form=study_form)
+        except(OperationalError):
+            flash(OPERATIONALERROR_TEXT)
+            return(OPERATIONALERROR_TEXT)
+
+
+    @app.route("/deck/study/<int:deck_id>", methods=["POST"])
+    @login_required
+    def deck_study_post(deck_id):
+        try:
+            study_form = StudyForm()
+            deck = db.session.scalars(db.select(Deck).filter_by(id=deck_id)).first()
+            if deck.user_id == current_user.id:
+                if study_form.validate_on_submit():
+                    card = db.session.scalars(db.select(Card).filter_by(id=study_form.cad_id.data).filter_by(user_id=current_user.id)).first()
+                    if study_form.hurd_button.data:
+                        card.weights += 5
+                    elif study_form.norm_button.data:
+                        card.weights -= 1
+                    elif study_form.easy_button.data:
+                        card.weights -= 2
+                    db.session.add(card)
+                    db.session.commit()
+                    return redirect(url_for("deck_study", deck_id=deck_id ))
+            return study_form.card_id.data
         except(OperationalError):
             flash(OPERATIONALERROR_TEXT)
             return(OPERATIONALERROR_TEXT)
