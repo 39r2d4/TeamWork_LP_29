@@ -4,7 +4,7 @@ from flask_migrate import Migrate
 from sqlalchemy.exc import OperationalError
 
 
-from webapp.forms import BaseCardForm, DeckForm, LoginForm, NewCardForm, SignupForm
+from webapp.forms import BaseCardForm, DeckForm, LoginForm, NewCardForm, SignupForm, StudyForm
 from webapp.model import db, User, Deck, Card, CardType
 from webapp.config import OPERATIONALERROR_TEXT
 from webapp.mock import m_card_type, m_deck

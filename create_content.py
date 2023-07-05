@@ -16,4 +16,4 @@ if __name__ == "__main__":
       db.session.commit()
       print(card_types)
 
-   create_admin("admin", "123", "example@exapple.com")
+   #create_admin("admin", "123", "example@exapple.com")
