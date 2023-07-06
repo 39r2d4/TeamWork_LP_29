@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="d-flex justify-content-center"> 
+    <form action="" method="POST">
+        {{ card_form.hidden_tag() }}
+        
+        <p>
+             {{ card_form.deck.label }}
+             {{ card_form.deck() }}
+             <a href={{ url_for("dack_new") }} >Добавить колоду</a>
+        </p>
+    <p>
+        {{ card_form.side_1.label }}
+        {{ card_form.side_1() }}
+    </p>
+   <p>        
+        {{ card_form.side_2.label }}
+        {{ card_form.side_2() }}
+    </p>
+   <p> 
+        {{ card_form.type.label }}
+        {{ card_form.type() }} 
+    </p>
+    <p>
+        {{ card_form.tags.label }}
+        {{ card_form.tags() }}   
+    </p>
+   <p>
+       {{ card_form.is_active() }}   
+       {{ card_form.is_active.label }}
+   </p>
+
+    <p>
+        {{ card_form.button() }}
+    </p>
+
+    
+</div>
+    
+
+
+{% endblock content %}
+

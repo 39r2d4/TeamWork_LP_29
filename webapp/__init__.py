@@ -3,12 +3,9 @@ from flask_login import current_user, LoginManager, login_user, logout_user, log
 from flask_migrate import Migrate
 from sqlalchemy.exc import OperationalError
 
-from webapp.forms import BaseCardForm, DeckForm, LoginForm, NewCardForm, StudyForm
+from webapp.forms import BaseCardForm, DeckForm, LoginForm, NewCardForm, SignupForm, StudyForm
 from webapp.model import db, User, Deck, Card, CardType
-
 from webapp.config import OPERATIONALERROR_TEXT
-
-from webapp.mock import m_card_type, m_deck
 import random
 
 
@@ -24,9 +21,6 @@ def create_app():
     login_manager.init_app(app)
     login_manager.login_view = "login"
 
-
-
-
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(user_id)
@@ -39,6 +33,7 @@ def create_app():
         except(OperationalError):
             flash(OPERATIONALERROR_TEXT)
             return(OPERATIONALERROR_TEXT)
+
 
     @app.route("/login", methods=["POST", "GET"])
     def login():
@@ -64,10 +59,41 @@ def create_app():
                 return(redirect(url_for("index")))
             login_form = LoginForm()
             return render_template("login.html", form=login_form)
+
         except(OperationalError):
             flash(OPERATIONALERROR_TEXT)
             return(OPERATIONALERROR_TEXT)
 
+    @app.route('/signup')
+    def signup():
+        if current_user.is_authenticated:
+            return redirect(url_for("index"))
+        title = 'Регистрация'
+        signup_form = SignupForm()
+        return render_template('signup.html', page_title=title, form=signup_form)
+
+
+    @app.route('/process-signup', methods=['POST'])
+    def process_signup():
+        signup_form = SignupForm()
+        if signup_form.validate_on_submit():
+            new_user = User(username=signup_form.username.data, email=signup_form.email.data, role='user')
+            new_user.set_password(signup_form.password.data)
+            db.session.add(new_user)
+            db.session.commit()
+            flash("Вы успешно зарегистрировались")
+            return redirect(url_for('login'))
+        
+        for error in signup_form.errors:
+            match error:
+                case "email":
+                    flash("Введите корректный Email")
+                case "password2":
+                    flash("Пароли не совпадают")    
+        flash('пожалуйста, исправьте ошибки в форме')
+
+        return redirect(url_for('signup'))
+    
 
     @app.route("/logout")
     @login_required
@@ -102,7 +128,6 @@ def create_app():
 
                    flash(f"Карточка ID: {new_card.id}, сторона_1: {new_card.side_1}  создана")
                    return redirect(url_for("create_card"))
-
             
             decks = []
             for deck in current_user.deck:
@@ -155,11 +180,11 @@ def create_app():
                 card_form.is_active.data = card.is_active
                 card_form.tags.data = card.tags
                 card_form.type.choices = card_types
-                return render_template("card/edit_card_form.html", card_form=card_form )
 
+                return render_template("card/edit_card_form.html", card_form=card_form )
             flash("Это не ваша карточка")
             return  redirect(url_for("index"))
-    
+
         except(OperationalError):
             flash(OPERATIONALERROR_TEXT)
             return(OPERATIONALERROR_TEXT)
@@ -177,7 +202,6 @@ def create_app():
                     db.session.commit()
                     flash(f"Колода {deck_form.name.data} создана")
 
-                 
             return render_template("deck/add_new_deck.html", deck_form=deck_form)
 
         except(OperationalError):
@@ -198,8 +222,8 @@ def create_app():
                 deck_dickt["card_count"] = len(deck.card)
                 deks_to_teamplate.append(deck_dickt)
 
-            return render_template("deck/decks_view.html", decks=deks_to_teamplate) 
-    
+            return render_template("deck/decks_view.html", decks=deks_to_teamplate)    
+
         except(OperationalError):
             flash(OPERATIONALERROR_TEXT)
             return(OPERATIONALERROR_TEXT)
@@ -214,7 +238,9 @@ def create_app():
                 #пока без пагинации
                 return render_template("deck/deck_with_cards.html", deck=deck)
             flash("Это не ваша колода")
+
             return(redirect(url_for("decks_view")))
+
         except(OperationalError):
             flash(OPERATIONALERROR_TEXT)
             return(OPERATIONALERROR_TEXT)
@@ -229,7 +255,9 @@ def create_app():
                 card_with_max_weights = db.session.scalars(db.select(Card).filter_by(deck_id=deck_id).filter_by(user_id=current_user.id).order_by(-Card.weights).limit(5)).all()
                 random_card = card_with_max_weights[random.randint(0, len(card_with_max_weights)-1)]
                 study_form = StudyForm(cad_id=random_card.id)
+
                 return render_template("deck/study/study_deck.html", card=random_card, study_form=study_form)
+
         except(OperationalError):
             flash(OPERATIONALERROR_TEXT)
             return(OPERATIONALERROR_TEXT)
@@ -252,12 +280,13 @@ def create_app():
                         card.weights -= 2
                     db.session.add(card)
                     db.session.commit()
+
                     return redirect(url_for("deck_study", deck_id=deck_id ))
             return study_form.card_id.data
+
         except(OperationalError):
             flash(OPERATIONALERROR_TEXT)
             return(OPERATIONALERROR_TEXT)
-
 
 
     return app

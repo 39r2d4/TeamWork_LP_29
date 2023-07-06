@@ -1,6 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import Form, FieldList, StringField, PasswordField, SubmitField, TextAreaField, BooleanField, SelectField, IntegerField
-from wtforms.validators import DataRequired
+
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField, BooleanField, SelectField
+from wtforms.validators import DataRequired, Email, EqualTo
+
 
 
 class LoginForm(FlaskForm):
@@ -8,6 +10,12 @@ class LoginForm(FlaskForm):
     password = PasswordField("Пароль", validators=[DataRequired()], render_kw={"class": "form-control"})
     button = SubmitField("Войти", render_kw={"class": "btn btn-primary"})
 
+class SignupForm(FlaskForm):
+    username = StringField("Имя пользователя", validators=[DataRequired()], render_kw={"class": "form-control"})
+    email = StringField("Email пользователя", validators=[DataRequired(), Email()], render_kw={"class": "form-control"})
+    password = PasswordField("Пароль", validators=[DataRequired()], render_kw={"class": "form-control"})
+    password2 = PasswordField("Повторите пароль", validators=[DataRequired(), EqualTo('password')], render_kw={"class": "form-control"})
+    button = SubmitField("Зарегистрироваться", render_kw={"class": "btn btn-primary"})
 
 class CardType(FlaskForm):
     name = StringField("Название типа карточки")
@@ -15,7 +23,7 @@ class CardType(FlaskForm):
 
 
 
-class BaseCardForm(FlaskForm): #CardForm(FlaskForm):
+class BaseCardForm(FlaskForm): 
     side_1 = TextAreaField("Текст стороны 1", validators=[DataRequired()], render_kw={"class": "form-control"})
     side_2 = TextAreaField("Текст стороны 2", validators=[DataRequired()],render_kw={"class": "form-control"})
     is_active = BooleanField("Карточка активна", render_kw={"class": "form-check-input", "type": "checkbox"})
