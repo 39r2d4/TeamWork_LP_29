@@ -3,16 +3,12 @@ from flask_login import LoginManager
 from flask_migrate import Migrate
 from sqlalchemy.exc import OperationalError
 
-from webapp.card.forms import BaseCardForm, NewCardForm
-from webapp.deck.forms import DeckForm
-from webapp.study.forms import StudyForm
 
 from webapp.model import db
-from webapp.card.models import Card, CardType
-from webapp.deck.models import Deck
 from webapp.user.models import User
 
 from webapp.config import OPERATIONALERROR_TEXT
+
 from webapp.user.views import blueprint as user_blueprint
 from webapp.deck.views import blueprint as deck_blueprint
 from webapp.card.views import blueprint as card_blueprint

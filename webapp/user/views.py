@@ -14,7 +14,7 @@ def login():
     try:
         if request.method == "GET":
             login_form = LoginForm()
-            return render_template("login.html", form=login_form)
+            return render_template("/user/login.html", form=login_form)
 
         elif request.method == "POST":  # переделать просто на validate_on_submit()
             login_form = LoginForm()
@@ -27,12 +27,12 @@ def login():
                     return redirect(url_for("index"))
 
             flash("Не правильный логин или пароль")
-            return redirect(url_for("login"))
+            return redirect(url_for("user.login"))
 
         if current_user.is_authenticated:
-            return redirect(url_for("index"))
+            return redirect(url_for("user.index"))
         login_form = LoginForm()
-        return render_template("login.html", form=login_form)
+        return render_template("/user/login.html", form=login_form)
 
     except OperationalError:
         flash(OPERATIONALERROR_TEXT)
@@ -42,10 +42,10 @@ def login():
 @blueprint.route('/signup')
 def signup():
     if current_user.is_authenticated:
-        return redirect(url_for("index"))
+        return redirect(url_for("user.index"))
     title = 'Регистрация'
     signup_form = SignupForm()
-    return render_template('signup.html', page_title=title, form=signup_form)
+    return render_template('/user/signup.html', page_title=title, form=signup_form)
 
 
 @blueprint.route('/process-signup', methods=['POST'])
@@ -57,7 +57,7 @@ def process_signup():
         db.session.add(new_user)
         db.session.commit()
         flash("Вы успешно зарегистрировались")
-        return redirect(url_for('login'))
+        return redirect(url_for('user.login'))
 
     for error in signup_form.errors:
         match error:
@@ -76,7 +76,7 @@ def logout():
     try:
         logout_user()
         flash("Вы вышли из системы")
-        return redirect(url_for("index"))
+        return redirect(url_for("user.index"))
     except OperationalError:
         flash(OPERATIONALERROR_TEXT)
         return OPERATIONALERROR_TEXT

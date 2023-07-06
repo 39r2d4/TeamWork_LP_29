@@ -7,7 +7,7 @@ from webapp.model import db
 from webapp.card.models import Card, CardType
 
 from webapp.config import OPERATIONALERROR_TEXT
-blueprint = Blueprint('deck', __name__, url_prefix='/decks')
+blueprint = Blueprint('card', __name__, url_prefix='/cards')
 
 
 @blueprint.route("/card/new", methods=["POST", "GET"])

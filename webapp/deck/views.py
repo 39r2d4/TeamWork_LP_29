@@ -6,6 +6,7 @@ from webapp.deck.forms import DeckForm
 from webapp.study.forms import StudyForm
 
 from webapp.model import db
+
 from webapp.card.models import Card
 from webapp.deck.models import Deck
 
@@ -13,7 +14,7 @@ from webapp.deck.models import Deck
 from webapp.config import OPERATIONALERROR_TEXT
 import random
 
-blueprint = Blueprint('card', __name__, url_prefix='/cards')
+blueprint = Blueprint('deck', __name__, url_prefix='/decks')
 
 
 @blueprint.route("/deck/new", methods=["POST", "GET"])
