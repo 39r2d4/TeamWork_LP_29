@@ -6,6 +6,7 @@ from sqlalchemy.exc import OperationalError
 from webapp.model import db
 from webapp.config import OPERATIONALERROR_TEXT
 
+
 blueprint = Blueprint('user', __name__, url_prefix='/users')
 
 

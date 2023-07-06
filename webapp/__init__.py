@@ -12,6 +12,8 @@ from webapp.config import OPERATIONALERROR_TEXT
 from webapp.user.views import blueprint as user_blueprint
 from webapp.deck.views import blueprint as deck_blueprint
 from webapp.card.views import blueprint as card_blueprint
+from webapp.study.views import blueprint as study_blueprint
+
 
 
 def create_app():
@@ -29,6 +31,7 @@ def create_app():
     app.register_blueprint(user_blueprint)
     app.register_blueprint(deck_blueprint)
     app.register_blueprint(card_blueprint)
+    app.register_blueprint(study_blueprint)
 
     @login_manager.user_loader
     def load_user(user_id):

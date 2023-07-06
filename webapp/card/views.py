@@ -10,7 +10,7 @@ from webapp.config import OPERATIONALERROR_TEXT
 blueprint = Blueprint('card', __name__, url_prefix='/cards')
 
 
-@blueprint.route("/card/new", methods=["POST", "GET"])
+@blueprint.route("/new", methods=["POST", "GET"])
 @login_required
 def create_card():
     try:
@@ -30,7 +30,7 @@ def create_card():
             db.session.commit()
 
             flash(f"Карточка ID: {new_card.id}, сторона_1: {new_card.side_1}  создана")
-            return redirect(url_for("create_card"))
+            return redirect(url_for("card.create_card"))
 
         decks = []
         for deck in current_user.deck:
@@ -43,14 +43,14 @@ def create_card():
         card_form.deck.choices = decks
         card_form.type.choices = card_types
 
-        return render_template("/card/add_new_card_form.html", card_form=card_form)
+        return render_template("card/add_new_card_form.html", card_form=card_form)
 
     except OperationalError:
         flash(OPERATIONALERROR_TEXT)
         return OPERATIONALERROR_TEXT
 
 
-@blueprint.route("/card/edit/<int:card_id>", methods=["POST", "GET"])
+@blueprint.route("/edit/<int:card_id>", methods=["POST", "GET"])
 @login_required
 def edit_card(card_id):
     try:
