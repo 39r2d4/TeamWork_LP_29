@@ -1,6 +1,7 @@
 from getpass import getpass
-from webapp import db, create_app
-from webapp.model import db, User
+from webapp import create_app
+from webapp.model import db
+from webapp.user.models import User
 
 app = create_app()
 

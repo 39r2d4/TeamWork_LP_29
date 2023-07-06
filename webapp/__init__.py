@@ -33,6 +33,7 @@ def create_app():
     app.register_blueprint(user_blueprint)
     app.register_blueprint(deck_blueprint)
     app.register_blueprint(card_blueprint)
+
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(user_id)
