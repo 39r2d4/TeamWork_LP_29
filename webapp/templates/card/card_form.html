@@ -7,6 +7,11 @@
         {{ card_form.hidden_tag() }}
         
         <p>
+             {{ card_form.deck.label }}
+             {{ card_form.deck() }}
+             <a href='{{ url_for("deck.dack_new") }}' >Добавить колоду</a>
+        </p>
+        <p>
             {{ card_form.side_1.label }}
             {{ card_form.side_1() }}
         </p>
@@ -26,7 +31,6 @@
            {{ card_form.is_active() }}
            {{ card_form.is_active.label }}
         </p>
-
         <p>
             {{ card_form.button() }}
         </p>
