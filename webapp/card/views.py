@@ -29,7 +29,7 @@ def create_card():
             db.session.add(new_card)
             db.session.commit()
 
-            flash(f"Карточка ID: {new_card.id}, сторона_1: {new_card.side_1}  создана")
+            flash(f"Карточка ID: {new_card.id}, лицо: {new_card.side_1}  создана")
             return redirect(url_for("card.create_card"))
 
         decks = []

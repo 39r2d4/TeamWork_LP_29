@@ -27,7 +27,7 @@ def login():
                     flash('Успешная авторизация')
                     return redirect(url_for("index"))
 
-            flash("Не правильный логин или пароль")
+            flash("Неправильный логин или пароль")
             return redirect(url_for("user.login"))
 
         if current_user.is_authenticated:
@@ -77,7 +77,7 @@ def logout():
     try:
         logout_user()
         flash("Вы вышли из системы")
-        return redirect(url_for("user.index"))
+        return redirect(url_for("index"))
     except OperationalError:
         flash(OPERATIONALERROR_TEXT)
         return OPERATIONALERROR_TEXT
