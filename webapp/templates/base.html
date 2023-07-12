@@ -16,7 +16,7 @@
             <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
               <li class="nav-item dropdown">
                 <div class="btn-group">
-                  <button type="button" class="btn btn-dark">Колоды</button>
+                  <button type="button" class="btn btn-dark"><a class="nav-link active" href='{{ url_for("deck.decks_view") }}'>Колоды</a></button>
                   <button type="button" class="btn btn-dark dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                     <span class="visually-hidden">Toggle Dropdown</span>
                   </button>
@@ -27,15 +27,15 @@
                 </div>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href='{{ url_for("card.create_card") }}'>Создать карточку</a>
+                <button type="button" class="btn btn-dark"><a class="nav-link active" aria-current="page" href='{{ url_for("card.create_card") }}'>Создать карточку</a></button>
               </li>
             </ul>
               <ul class="navbar-nav ms-auto mb-0 mb-lg-0">
                 <li class="nav-item">
                   {% if current_user.is_authenticated %}
-                  <a class="nav-link active" aria-current="page" href='{{ url_for("user.logout") }}'>Logout</a>
+                   <button type="button" class="btn btn-dark"><a class="nav-link active" aria-current="page" href='{{ url_for("user.logout") }}'>Logout</a></button>
                   {% else %}
-                  <a class="nav-link active" aria-current="page" href='{{ url_for("user.login") }}'>Login</a>
+                   <button type="button" class="btn btn-dark"><a class="nav-link active" aria-current="page" href='{{ url_for("user.login") }}'>Login</a></button>
                   {% endif %}
                 </li>
               </ul>
