@@ -6,13 +6,12 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" rel="stylesheet" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></link>
     <title>Ресурс для изучения</title>
   </head>
   <body>
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-          <a class="navbar-brand" href='{{ url_for(index) }}'>NotAnki</a>
+          <a class="navbar-brand" href='{{ url_for("index") }}'>NotAnki</a>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
               <li class="nav-item dropdown">
@@ -31,8 +30,7 @@
                 <a class="nav-link active" aria-current="page" href='{{ url_for("card.create_card") }}'>Создать карточку</a>
               </li>
             </ul>
-            <div class="nav-item">
-              <ul class="navbar-nav mb-0 mb-lg-0">
+              <ul class="navbar-nav ms-auto mb-0 mb-lg-0">
                 <li class="nav-item">
                   {% if current_user.is_authenticated %}
                   <a class="nav-link active" aria-current="page" href='{{ url_for("user.logout") }}'>Logout</a>
@@ -41,7 +39,6 @@
                   {% endif %}
                 </li>
               </ul>
-            </div>
           </div>
         </div>
       </nav>
@@ -60,5 +57,6 @@
       <!-- Optional JavaScript -->
       <!-- jQuery first, then Popper.js, then Bootstrap JS -->
       <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
     </body>
     </html>
