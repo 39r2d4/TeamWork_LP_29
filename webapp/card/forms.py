@@ -9,11 +9,11 @@ class CardType(FlaskForm):
 
 
 class BaseCardForm(FlaskForm):
-    side_1 = TextAreaField("Текст стороны 1", validators=[DataRequired()], render_kw={"class": "form-control"})
-    side_2 = TextAreaField("Текст стороны 2", validators=[DataRequired()], render_kw={"class": "form-control"})
+    side_1 = TextAreaField("Лицо", validators=[DataRequired()], render_kw={"class": "form-control"})
+    side_2 = TextAreaField("Оборот", validators=[DataRequired()], render_kw={"class": "form-control"})
     is_active = BooleanField("Карточка активна", render_kw={"class": "form-check-input", "type": "checkbox"})
-    tags = StringField("Метка", validators=[DataRequired()], render_kw={"class": "form-control"})
-    type = SelectField("Тип карточки", choices=[], coerce=int, render_kw={"class": "form-control"}, validate_choice=False)  # !!!
+    tags = StringField("Ключевые слова", validators=[DataRequired()], render_kw={"class": "form-control"})
+    type = SelectField("Тип", choices=[], coerce=int, render_kw={"class": "form-control"}, validate_choice=False)  # !!!
     button = SubmitField("Сохранить", render_kw={"class": "btn btn-primary"})
 
 

@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from webapp.model import db
 
+
 class User(db.Model, UserMixin):
     __tablename__ = "user_teble"
     id: db.Mapped[int] = db.mapped_column(db.Integer, primary_key=True)
@@ -22,4 +23,3 @@ class User(db.Model, UserMixin):
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
-
