@@ -71,4 +71,3 @@ def deck_view(deck_id):
     except OperationalError:
         flash(OPERATIONALERROR_TEXT)
         return OPERATIONALERROR_TEXT
-

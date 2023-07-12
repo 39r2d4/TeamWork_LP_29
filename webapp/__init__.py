@@ -15,7 +15,6 @@ from webapp.card.views import blueprint as card_blueprint
 from webapp.study.views import blueprint as study_blueprint
 
 
-
 def create_app():
 
     app = Flask(__name__)
@@ -23,7 +22,6 @@ def create_app():
 
     db.init_app(app)
     migrate = Migrate(app, db)
-
 
     login_manager = LoginManager()
     login_manager.init_app(app)
