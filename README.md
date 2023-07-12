@@ -15,7 +15,7 @@
 1) скопировать репозиторий командой git clone https://github.com/39r2d4/TeamWork_LP_29.git
 2) активировать виртуальную машину
 3) установить все требования командой pip install -r requirements.txt
-4) запустить приложение командой flask --app webapp run --reload --debug
+4) запустить приложение командой flask --app webapp run --reload
 
 ## Контактная информация:
 niks_remez2@mail.ru
