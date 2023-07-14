@@ -17,7 +17,7 @@
     </tr>
   </thead>
   <tbody>
-    {% for i in range(5): %}
+    {% for i in range(decks|length): %}
     <tr>
       <td>{{ i+1 }}</td>
       <td><a href='{{ url_for("deck.deck_view", deck_id=decks[i].id) }}'>{{decks[i].name}}</a></td>
