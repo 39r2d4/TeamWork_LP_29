@@ -24,9 +24,11 @@ class Card(db.Model):
     tags: db.Mapped[str] = db.mapped_column(db.String(256))
     cardtype_id: db.Mapped[int] = db.mapped_column(db.ForeignKey("CardType_table.id"), index=True)
     user_id: db.Mapped[int] = db.mapped_column(db.ForeignKey("user_teble.id"), index=True)
-    weights: db.Mapped[int] = db.mapped_column(db.Integer())
+
+    weights: db.Mapped[float] = db.mapped_column(db.Float())
     successfully_count: db.Mapped[int] = db.mapped_column(db.Integer(), nullable=True, default=0)
     last_repetition: db.Mapped[datetime] = db.mapped_column(db.DateTime(), nullable=True, default=0)
+    next_repetition: db.Mapped[datetime] = db.mapped_column(db.DateTime(), nullable=True, default=0)
     inter_repetition_interval: db.Mapped[int] = db.mapped_column(db.Integer(), nullable=True, default=0)
 
     card_type: db.Mapped["CardType"] = db.relationship()
