@@ -68,7 +68,7 @@ def process_signup():
                 flash("Пароли не совпадают")
     flash('пожалуйста, исправьте ошибки в форме')
 
-    return redirect(url_for('signup'))
+    return redirect(url_for('user.signup'))
 
 
 @blueprint.route("/logout")
