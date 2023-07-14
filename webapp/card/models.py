@@ -1,4 +1,5 @@
 from webapp.model import db
+from datetime import datetime
 
 
 class CardType(db.Model):
@@ -17,13 +18,16 @@ class Card(db.Model):
     __tablename__ = "Card_table"
     id: db.Mapped[int] = db.mapped_column(db.Integer, primary_key=True)
     side_1: db.Mapped[str] = db.mapped_column(db.String(256))
-    side_2: db.Mapped[str] = db.mapped_column(db.String(256))
+    side_2: db.Mapped[str] = db.mapped_column(db.String(2048))
     deck_id: db.Mapped[int] = db.mapped_column(db.ForeignKey("deck_table.id"), index=True)
     is_active: db.Mapped[bool] = db.mapped_column()
     tags: db.Mapped[str] = db.mapped_column(db.String(256))
     cardtype_id: db.Mapped[int] = db.mapped_column(db.ForeignKey("CardType_table.id"), index=True)
     user_id: db.Mapped[int] = db.mapped_column(db.ForeignKey("user_teble.id"), index=True)
     weights: db.Mapped[int] = db.mapped_column(db.Integer())
+    successfully_count: db.Mapped[int] = db.mapped_column(db.Integer(), nullable=True, default=0)
+    last_repetition: db.Mapped[datetime] = db.mapped_column(db.DateTime(), nullable=True, default=0)
+    inter_repetition_interval: db.Mapped[int] = db.mapped_column(db.Integer(), nullable=True, default=0)
 
     card_type: db.Mapped["CardType"] = db.relationship()
     deck: db.Mapped["Deck"] = db.relationship(back_populates="card")

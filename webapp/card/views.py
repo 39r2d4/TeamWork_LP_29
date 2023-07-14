@@ -5,6 +5,7 @@ from sqlalchemy.exc import OperationalError
 from webapp.card.forms import BaseCardForm, NewCardForm
 from webapp.model import db
 from webapp.card.models import Card, CardType
+from webapp.deck.views import create_list_of_decks
 
 from webapp.config import OPERATIONALERROR_TEXT
 blueprint = Blueprint('card', __name__, url_prefix='/cards')
@@ -43,7 +44,7 @@ def create_card():
         card_form.deck.choices = decks
         card_form.type.choices = card_types
 
-        return render_template("card/add_new_card_form.html", card_form=card_form)
+        return render_template("card/add_new_card_form.html", card_form=card_form, decks=create_list_of_decks())
 
     except OperationalError:
         flash(OPERATIONALERROR_TEXT)
