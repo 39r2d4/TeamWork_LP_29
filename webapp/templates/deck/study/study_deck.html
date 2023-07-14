@@ -6,35 +6,34 @@
     function unhide() {
         hiden_elem = document.querySelector("div#uniwue_id_to_hidden")
         hiden_elem.classList.remove('visually-hidden')
-        visible_elem = document.querySelector("button#uniwue_id_to_visible")
+        visible_elem = document.querySelector("button#unique_id_to_visible")
         visible_elem.classList.add('visually-hidden')
     }
     
 </script>
-<H1>{{card.side_1}}</H1>
 
+<p></p>
+<h1 class="text-center">{{card.side_1}}</h1>
 
-<button type="button" id="uniwue_id_to_visible" onclick="unhide()" class="btn btn-dark">Показать</button>
-
-
+<div class='text-center'><button type="button" id="unique_id_to_visible" onclick="unhide()" class="btn btn-dark justify-content-center">Показать</button></div>
 
 <div class="visually-hidden" id="uniwue_id_to_hidden">
-    <ul>
-        <h1>{{card.side_2}}</h1>
-    </ul>
-    <ul>
-        
-    </ul>
-    <ul>
-        <div class="btn-group" role="group">
-        <form action="" method="post">
-            {{ study_form.hidden_tag() }}
-            {{ study_form.hurd_button() }}
-            {{ study_form.norm_button() }}
-            {{ study_form.easy_button() }}
-            {{ study_form.cad_id() }}
-        </form>
-        </div>
-    </ul>
+    <div class="text-center">
+        <hr/>
+        <ul>
+            <h1 class="text-center">{{card.side_2}}</h1>
+        </ul>
+        <ul>
+            <div class="btn-group" role="group">
+                <form action="" method="post">
+                    {{ study_form.hidden_tag() }}
+                    {{ study_form.hurd_button() }}
+                    {{ study_form.norm_button() }}
+                    {{ study_form.easy_button() }}
+                    {{ study_form.cad_id() }}
+                </form>
+            </div>
+        </ul>
+    </div>
 </div>
     {% endblock content %}
