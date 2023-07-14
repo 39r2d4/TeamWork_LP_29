@@ -5,6 +5,7 @@ class Deck(db.Model):
     __tablename__ = "deck_table"
     id: db.Mapped[int] = db.mapped_column(db.Integer, primary_key=True)
     name: db.Mapped[str] = db.mapped_column(db.String(128), index=True)
+
     comment: db.Mapped[str] = db.mapped_column(db.String(128), nullable=True, default='')
     user_id: db.Mapped[int] = db.mapped_column(db.ForeignKey("user_teble.id"), index=True)
 

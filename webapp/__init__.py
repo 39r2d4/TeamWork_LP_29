@@ -13,8 +13,8 @@ from webapp.user.views import blueprint as user_blueprint
 from webapp.deck.views import blueprint as deck_blueprint
 from webapp.card.views import blueprint as card_blueprint
 from webapp.study.views import blueprint as study_blueprint
-
 from webapp.deck.views import create_list_of_decks
+
 
 def create_app():
 
