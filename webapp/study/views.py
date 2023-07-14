@@ -38,7 +38,7 @@ def algorithm(user_grade, successfully_count, weights, inter_repetition_interval
     print("weights:", weights)
     if weights < 1.3:
         weights = 1.3
-    print(successfully_count, weights, inter_repetition_interval)    
+         
     return successfully_count, weights, inter_repetition_interval
 
 
@@ -51,11 +51,7 @@ def deck_study(deck_id):
     try:
         deck = db.session.scalars(db.select(Deck).filter_by(id=deck_id)).first()
         if deck.user_id == current_user.id:
-            now = datetime.now().date()
             cards_for_repeat = db.session.scalars(db.select(Card).filter_by(deck_id=deck_id).filter_by(user_id=current_user.id).filter(func.DATE(Card.next_repetition) <= func.current_date())).all()
-            
-            #card_with_max_weights = db.session.scalars(db.select(Card).filter_by(deck_id=deck_id).filter_by(user_id=current_user.id).order_by(-Card.weights).limit(5)).all()
-            #random_card = card_with_max_weights[random.randint(0, len(card_with_max_weights)-1)]
             
             if len(cards_for_repeat) == 0:
                 flash("Нет карт для повторения")
@@ -112,32 +108,3 @@ def deck_study_post(deck_id):
     except OperationalError:
         flash(OPERATIONALERROR_TEXT)
         return OPERATIONALERROR_TEXT
-
-
-""" 
-@blueprint.route("/study/<int:deck_id>", methods=["POST"])
-@login_required
-def deck_study_post(deck_id):
-    try:
-        study_form = StudyForm()
-        deck = db.session.scalars(db.select(Deck).filter_by(id=deck_id)).first()
-        if deck.user_id == current_user.id:
-            if study_form.validate_on_submit():
-                card = db.session.scalars(db.select(Card).filter_by(id=study_form.cad_id.data).filter_by(user_id=current_user.id)).first()
-                if study_form.hurd_button.data:
-                    card.weights += 5
-                elif study_form.norm_button.data:
-                    card.weights -= 1
-                elif study_form.easy_button.data:
-                    card.weights -= 2
-                db.session.add(card)
-                db.session.commit()
-
-                return redirect(url_for("study.deck_study", deck_id=deck_id))
-        return study_form.card_id.data
-
-    except OperationalError:
-        flash(OPERATIONALERROR_TEXT)
-        return OPERATIONALERROR_TEXT
-
-"""

@@ -12,7 +12,6 @@ from webapp.deck.models import Deck
 
 
 from webapp.config import OPERATIONALERROR_TEXT
-import random
 
 blueprint = Blueprint('deck', __name__, url_prefix='/decks')
 
