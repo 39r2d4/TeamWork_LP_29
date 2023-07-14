@@ -14,6 +14,7 @@ from webapp.deck.views import blueprint as deck_blueprint
 from webapp.card.views import blueprint as card_blueprint
 from webapp.study.views import blueprint as study_blueprint
 
+from webapp.deck.views import create_list_of_decks
 
 def create_app():
 
@@ -40,14 +41,7 @@ def create_app():
     def index():
         try:
             if current_user.is_authenticated:
-                deks_to_template = []
-                for deck in current_user.deck:
-                    deck_dickt = dict()
-                    deck_dickt["id"] = deck.id
-                    deck_dickt["name"] = deck.name
-                    deck_dickt["comment"] = deck.comment
-                    deck_dickt["card_count"] = len(deck.card)
-                    deks_to_template.append(deck_dickt)
+                deks_to_template = create_list_of_decks()
                 deks_to_template = sorted(deks_to_template, key=lambda x: x["card_count"], reverse=True)
                 if len(deks_to_template) > 5:
                     deks_to_template = deks_to_template[:5]
