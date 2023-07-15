@@ -43,9 +43,9 @@ def create_app():
             if current_user.is_authenticated:
                 deks_to_template = create_list_of_decks()
                 deks_to_template = sorted(deks_to_template, key=lambda x: x["card_count"], reverse=True)
-                if len(deks_to_template) >= 5:
+                if len(deks_to_template) > 5:
                     deks_to_template = deks_to_template[:5]
-                    return render_template("index.html", decks=deks_to_template)
+                return render_template("index.html", decks=deks_to_template)
             return render_template("index.html")
         except OperationalError:
             flash(OPERATIONALERROR_TEXT)
