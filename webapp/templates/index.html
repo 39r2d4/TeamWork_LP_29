@@ -2,9 +2,36 @@
 
 {% block content %}
 
-    <h4>Hello world</h4>
-    {%for index in range(number)%}
-    <h5>{{index}}</h5>
+
+
+
+{% if current_user.is_authenticated %}
+<h3>самые объемные колоды</h3>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Название</th>
+      <th scope="col">Количество карт</th>
+      <th scope="col">Ключевое слово</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for i in range(decks|length): %}
+    <tr>
+      <td>{{ i+1 }}</td>
+      <td><a href='{{ url_for("deck.deck_view", deck_id=decks[i].id) }}'>{{decks[i].name}}</a></td>
+      <td><small>{{ decks[i].card_count }}</small></td>
+      <td><p class="mb-1">{{decks[i].comment}}</p></td>
+    </tr>
     {% endfor %}
+  </tbody>
+</table>
+
+{% else %}
+
+<h2> Зарегистрируйтесь чтобы начать пользоваться приложением</h2>
+
+{% endif %}
 
 {% endblock %}

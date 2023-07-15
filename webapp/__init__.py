@@ -1,5 +1,5 @@
 from flask import Flask, render_template, flash
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 from flask_migrate import Migrate
 from sqlalchemy.exc import OperationalError
 
@@ -13,6 +13,7 @@ from webapp.user.views import blueprint as user_blueprint
 from webapp.deck.views import blueprint as deck_blueprint
 from webapp.card.views import blueprint as card_blueprint
 from webapp.study.views import blueprint as study_blueprint
+from webapp.deck.views import create_list_of_decks
 
 
 def create_app():
@@ -39,7 +40,13 @@ def create_app():
     @app.route("/")
     def index():
         try:
-            return render_template("index.html", number=1)
+            if current_user.is_authenticated:
+                deks_to_template = create_list_of_decks()
+                deks_to_template = sorted(deks_to_template, key=lambda x: x["card_count"], reverse=True)
+                if len(deks_to_template) >= 5:
+                    deks_to_template = deks_to_template[:5]
+                    return render_template("index.html", decks=deks_to_template)
+            return render_template("index.html")
         except OperationalError:
             flash(OPERATIONALERROR_TEXT)
             return OPERATIONALERROR_TEXT

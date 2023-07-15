@@ -6,13 +6,11 @@ from webapp.deck.forms import DeckForm
 from webapp.study.forms import StudyForm
 
 from webapp.model import db
-
 from webapp.card.models import Card
 from webapp.deck.models import Deck
 
 
 from webapp.config import OPERATIONALERROR_TEXT
-import random
 
 blueprint = Blueprint('deck', __name__, url_prefix='/decks')
 
@@ -36,20 +34,23 @@ def deck_new():
         return OPERATIONALERROR_TEXT
 
 
+def create_list_of_decks():
+    deks_to_template = []
+    for deck in current_user.deck:
+        deck_dickt = dict()
+        deck_dickt["id"] = deck.id
+        deck_dickt["name"] = deck.name
+        deck_dickt["comment"] = deck.comment
+        deck_dickt["card_count"] = len(deck.card)
+        deks_to_template.append(deck_dickt)
+    return deks_to_template
+
+
 @blueprint.route("/view")
 @login_required
 def decks_view():
     try:
-        deks_to_teamplate = []
-        for deck in current_user.deck:
-            deck_dickt = dict()
-            deck_dickt["id"] = deck.id
-            deck_dickt["name"] = deck.name
-            deck_dickt["comment"] = deck.comment
-            deck_dickt["card_count"] = len(deck.card)
-            deks_to_teamplate.append(deck_dickt)
-
-        return render_template("deck/decks_view.html", decks=deks_to_teamplate)
+        return render_template("deck/decks_view.html", decks=create_list_of_decks())
 
     except OperationalError:
         flash(OPERATIONALERROR_TEXT)

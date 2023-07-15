@@ -1,10 +1,15 @@
+from datetime import datetime, timedelta
+
 from flask import Blueprint, render_template, flash, url_for, redirect
 from flask_login import current_user, login_required
 from sqlalchemy.exc import OperationalError
 
+
+
 from webapp.card.forms import BaseCardForm, NewCardForm
 from webapp.model import db
 from webapp.card.models import Card, CardType
+from webapp.deck.views import create_list_of_decks
 
 from webapp.config import OPERATIONALERROR_TEXT
 blueprint = Blueprint('card', __name__, url_prefix='/cards')
@@ -16,6 +21,7 @@ def create_card():
     try:
         card_form = NewCardForm()
         if card_form.validate_on_submit():
+            now = datetime.now().date()
             new_card = Card(
                 side_1=card_form.side_1.data,
                 side_2=card_form.side_2.data,
@@ -24,7 +30,12 @@ def create_card():
                 tags=card_form.tags.data,
                 cardtype_id=card_form.type.data,
                 user_id=current_user.id,
-                weights=500)
+                weights=2.5,
+                inter_repetition_interval = 0,
+                successfully_count = 0, 
+                last_repetition=now,
+                next_repetition=now
+                )
 
             db.session.add(new_card)
             db.session.commit()
@@ -43,7 +54,7 @@ def create_card():
         card_form.deck.choices = decks
         card_form.type.choices = card_types
 
-        return render_template("card/add_new_card_form.html", card_form=card_form)
+        return render_template("card/add_new_card_form.html", card_form=card_form, decks=create_list_of_decks())
 
     except OperationalError:
         flash(OPERATIONALERROR_TEXT)
