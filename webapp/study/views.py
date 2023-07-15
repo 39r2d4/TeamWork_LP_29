@@ -52,7 +52,7 @@ def deck_study(deck_id):
         deck = db.session.scalars(db.select(Deck).filter_by(id=deck_id)).first()
         if deck.user_id == current_user.id:
             cards_for_repeat = db.session.scalars(db.select(Card).filter_by(deck_id=deck_id).filter_by(user_id=current_user.id).filter(func.DATE(Card.next_repetition) <= func.current_date())).all()
-            
+            print(cards_for_repeat)
             if len(cards_for_repeat) == 0:
                 flash("Нет карт для повторения")
                 return redirect(url_for("deck.decks_view"))
@@ -96,7 +96,7 @@ def deck_study_post(deck_id):
                 card.successfully_count = successfully_count
                 card.weights = weights
                 card.inter_repetition_interval = inter_repetition_interval
-                now = datetime.now().date()
+                now = datetime.utcnow().date()
                 card.last_repetition = now
                 card.next_repetition = now + timedelta(inter_repetition_interval)
                 db.session.add(card)
