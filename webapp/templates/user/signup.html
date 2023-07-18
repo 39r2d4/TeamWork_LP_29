@@ -23,6 +23,10 @@
         <p>
             {{ form.button }}
         </p>
+        <p>
+            {{ captcha_form.csrf_token }}
+            {{ captcha_form.recaptcha }}
+        </p>
     </form>
 </div>
 
