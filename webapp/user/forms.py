@@ -17,6 +17,3 @@ class SignupForm(FlaskForm):
     password2 = PasswordField("Повторите пароль", validators=[DataRequired(), EqualTo('password')], render_kw={"class": "form-control"})
     button = SubmitField("Зарегистрироваться", render_kw={"class": "btn btn-primary"})
     recaptcha = RecaptchaField()
-
-
-
