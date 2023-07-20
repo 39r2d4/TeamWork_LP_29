@@ -42,9 +42,6 @@ def algorithm(user_grade, successfully_count, weights, inter_repetition_interval
     return successfully_count, weights, inter_repetition_interval
 
 
-
-
-
 @blueprint.route("/study/<int:deck_id>", methods=["GET"])   
 @login_required
 def deck_study(deck_id):
@@ -60,13 +57,11 @@ def deck_study(deck_id):
             random_card = cards_for_repeat[random.randint(0, len(cards_for_repeat)-1)]
             study_form = StudyForm(cad_id=random_card.id)
 
-
-            return render_template("deck/study/study_deck.html", card=random_card, study_form=study_form)
+            return render_template("deck/study/study_deck.html", card=random_card, study_form=study_form, page_title="повторение")
 
     except OperationalError:
         flash(OPERATIONALERROR_TEXT)
         return OPERATIONALERROR_TEXT
-
 
 
 @blueprint.route("/study/<int:deck_id>", methods=["POST"])
@@ -84,8 +79,8 @@ def deck_study_post(deck_id):
                 elif study_form.easy_button.data:
                     user_grade = 2
 
-                card_id=study_form.cad_id.data
-                user_id=current_user.id
+                card_id = study_form.cad_id.data
+                user_id = current_user.id
                 card = db.session.scalars(db.select(Card).filter_by(id=card_id).filter_by(user_id=user_id)).first()
 
                 successfully_count = card.successfully_count
@@ -102,7 +97,7 @@ def deck_study_post(deck_id):
                 db.session.add(card)
                 db.session.commit()
 
-                return redirect(url_for("study.deck_study", deck_id=deck_id))
+                return redirect(url_for("study.deck_study", deck_id=deck_id, page_title="повторение"))
         return study_form.card_id.data
 
     except OperationalError:

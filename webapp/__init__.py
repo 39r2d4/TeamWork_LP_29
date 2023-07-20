@@ -45,7 +45,7 @@ def create_app():
                 deks_to_template = sorted(deks_to_template, key=lambda x: x["card_count"], reverse=True)
                 if len(deks_to_template) > 5:
                     deks_to_template = deks_to_template[:5]
-                return render_template("index.html", decks=deks_to_template)
+                return render_template("index.html", decks=deks_to_template, page_title='домашняя страница')
             return render_template("index.html")
         except OperationalError:
             flash(OPERATIONALERROR_TEXT)

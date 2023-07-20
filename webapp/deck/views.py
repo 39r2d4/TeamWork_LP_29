@@ -27,7 +27,7 @@ def deck_new():
             db.session.commit()
             flash(f"Колода {deck_form.name.data} создана")
 
-        return render_template("deck/add_new_deck.html", deck_form=deck_form)
+        return render_template("deck/add_new_deck.html", deck_form=deck_form, page_title='создание колоды')
 
     except OperationalError:
         flash(OPERATIONALERROR_TEXT)
@@ -50,7 +50,7 @@ def create_list_of_decks():
 @login_required
 def decks_view():
     try:
-        return render_template("deck/decks_view.html", decks=create_list_of_decks())
+        return render_template("deck/decks_view.html", decks=create_list_of_decks(), page_title='колоды')
 
     except OperationalError:
         flash(OPERATIONALERROR_TEXT)
@@ -64,7 +64,7 @@ def deck_view(deck_id):
         deck = db.session.scalars(db.select(Deck).filter_by(id=deck_id)).first()
         if deck.user_id == current_user.id:
             # пока без пагинации
-            return render_template("deck/deck_with_cards.html", deck=deck)
+            return render_template("deck/deck_with_cards.html", deck=deck, page_title=f'{deck.name}')
         flash("Это не ваша колода")
 
         return redirect(url_for("deck.decks_view"))
