@@ -1,11 +1,13 @@
-from webapp.user.models import User
-from flask_login import login_user
+from flask import session
 
-
-def test_create_card_page(client):
+def test_create_card_page(client, auth):
     with client:
-        client.post('/users/login', data={"username": 'admin', 'password': '123'})
+        auth.login()
         response = client.get('/cards/new')
-        #assert '<label for="side_1">Лицо</label>'.encode('UTF-8') in response.data
         print(response)
-        #assert response.status_code == 302
+        assert '<label for="side_1">Лицо</label>'.encode('UTF-8') in response.data
+        assert response.status_code == 200
+
+
+    
+    
