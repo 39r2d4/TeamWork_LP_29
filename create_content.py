@@ -1,11 +1,11 @@
 from webapp import db, create_app
 from webapp.card.models import CardType
 
+card_types = [{"name": "Основная", "description": "Базовая двусторонняя карточка"},
+                {"name": "С вариантами ответов", "description": "выбрать ответ из предложеных вариантов"},
+                {"name": "Основная (с обратной карточкой)", "description": "создается 2 зеркальных карточки"}]
 
 if __name__ == "__main__":
-    card_types = [{"name": "Основная", "description": "Базовая двусторонняя карточка"},
-                  {"name": "С вариантами ответов", "description": "выбрать ответ из предложеных вариантов"},
-                  {"name": "Основная (с обратной карточкой)", "description": "создается 2 зеркальных карточки"}]
 
     app = create_app()
 

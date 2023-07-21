@@ -16,10 +16,13 @@ from webapp.study.views import blueprint as study_blueprint
 from webapp.deck.views import create_list_of_decks
 
 
-def create_app():
-
+def create_app(base_URI=None, secret_key=None):
     app = Flask(__name__)
     app.config.from_pyfile("config.py")
+    if base_URI and secret_key:
+        app.config.update({"SQLALCHEMY_DATABASE_URI": base_URI,
+                       "SECRET_KEY": secret_key})
+        
 
     db.init_app(app)
     migrate = Migrate(app, db)
