@@ -2,7 +2,7 @@ from flask import Flask, render_template, flash
 from flask_login import LoginManager, current_user
 from flask_migrate import Migrate
 from sqlalchemy.exc import OperationalError
-
+from webapp.settings import DATABASE_URI, SECRET_KEY
 
 from webapp.model import db
 from webapp.user.models import User
@@ -16,13 +16,13 @@ from webapp.study.views import blueprint as study_blueprint
 from webapp.deck.views import create_list_of_decks
 
 
-def create_app(base_URI=None, secret_key=None):
+def create_app(config_file=None):
     app = Flask(__name__)
-    app.config.from_pyfile("config.py")
-    if base_URI and secret_key:
-        app.config.update({"SQLALCHEMY_DATABASE_URI": base_URI,
-                       "SECRET_KEY": secret_key})
-        
+    if not config_file:
+        app.config.from_pyfile("config.py")
+    else:
+        app.config.from_pyfile(config_file)    
+    
 
     db.init_app(app)
     migrate = Migrate(app, db)
