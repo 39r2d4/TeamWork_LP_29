@@ -54,7 +54,7 @@ def create_card():
         card_form.deck.choices = decks
         card_form.type.choices = card_types
 
-        return render_template("card/add_new_card_form.html", card_form=card_form, decks=create_list_of_decks())
+        return render_template("card/add_new_card_form.html", card_form=card_form, decks=create_list_of_decks(), page_title='создание карточки')
 
     except OperationalError:
         flash(OPERATIONALERROR_TEXT)
@@ -95,7 +95,7 @@ def edit_card(card_id):
             card_form.tags.data = card.tags
             card_form.type.choices = card_types
 
-            return render_template("card/edit_card_form.html", card_form=card_form)
+            return render_template("card/edit_card_form.html", card_form=card_form, page_title='редактирование карточки')
         flash("Это не ваша карточка")
         return redirect(url_for("index"))
 
