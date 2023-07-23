@@ -1,6 +1,6 @@
 from flask import Blueprint, request, render_template, flash, url_for, redirect
 from flask_login import current_user, login_user, logout_user, login_required
-from webapp.user.forms import LoginForm, SignupForm
+from webapp.user.forms import LoginForm, SignupForm, ContactForm
 from webapp.user.models import User
 from sqlalchemy.exc import OperationalError
 from webapp.model import db
@@ -46,7 +46,8 @@ def signup():
         return redirect(url_for("user.index"))
     title = 'Регистрация'
     signup_form = SignupForm()
-    return render_template('/user/signup.html', page_title=title, form=signup_form)
+    captcha_form = ContactForm
+    return render_template('/user/signup.html', page_title=title, form=signup_form, captcha_form=captcha_form)
 
 
 @blueprint.route('/process-signup', methods=['POST'])

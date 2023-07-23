@@ -22,8 +22,10 @@ def algorithm(user_grade, successfully_count, weights, inter_repetition_interval
     if user_grade >= 1:
         if successfully_count == 0:
             inter_repetition_interval = 1
-        elif successfully_count == 1:
-            inter_repetition_interval = 4
+        elif successfully_count == 1 and user_grade == 2:
+            inter_repetition_interval = 6
+        elif successfully_count == 1 and user_grade == 1:
+            inter_repetition_interval = 3
         else:
             inter_repetition_interval += round(inter_repetition_interval + weights)
         successfully_count += 1
@@ -32,10 +34,7 @@ def algorithm(user_grade, successfully_count, weights, inter_repetition_interval
         successfully_count = 0
         inter_repetition_interval = 0
 
-    print("weights:", weights)
-    print((0.1 - (5 - user_grade) * (0.08 + (5 - user_grade) * 0.02)))
     weights += (0.1 - (5 - user_grade) * (0.08 + (5 - user_grade) * 0.02))
-    print("weights:", weights)
     if weights < 1.3:
         weights = 1.3
          
@@ -49,7 +48,6 @@ def deck_study(deck_id):
         deck = db.session.scalars(db.select(Deck).filter_by(id=deck_id)).first()
         if deck.user_id == current_user.id:
             cards_for_repeat = db.session.scalars(db.select(Card).filter_by(deck_id=deck_id).filter_by(user_id=current_user.id).filter(func.DATE(Card.next_repetition) <= func.current_date())).all()
-            print(cards_for_repeat)
             if len(cards_for_repeat) == 0:
                 flash("Нет карт для повторения")
                 return redirect(url_for("deck.decks_view"))
