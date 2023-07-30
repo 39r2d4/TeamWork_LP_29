@@ -15,7 +15,8 @@ class BaseCardForm(FlaskForm):
     tags = StringField("Ключевые слова", validators=[DataRequired()], render_kw={"class": "form-control"})
     type = SelectField("Тип", choices=[], coerce=int, render_kw={"class": "form-control"}, validate_choice=False)  # !!!
     button = SubmitField("Сохранить", render_kw={"class": "btn btn-primary"})
+    delete_button = SubmitField("Удалить карточку", render_kw={"class": "btn btn-danger"})
 
 
 class NewCardForm(BaseCardForm):
-    deck = SelectField("Колода", choices=[], coerce=int, render_kw={"class": "form-control"}, validate_choice=False)  # передавать в форму список колод на выбор
+    deck = SelectField("Колода", choices=[], coerce=int, render_kw={"class": "form-control"}, validate_choice=False)  #передавать в форму список колод на выбор

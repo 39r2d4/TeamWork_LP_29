@@ -1,9 +1,8 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from flask import Blueprint, render_template, flash, url_for, redirect
 from flask_login import current_user, login_required
 from sqlalchemy.exc import OperationalError
-
 
 
 from webapp.card.forms import BaseCardForm, NewCardForm
@@ -31,8 +30,8 @@ def create_card():
                 cardtype_id=card_form.type.data,
                 user_id=current_user.id,
                 weights=2.5,
-                inter_repetition_interval = 0,
-                successfully_count = 0, 
+                inter_repetition_interval=0,
+                successfully_count=0,
                 last_repetition=now,
                 next_repetition=now
                 )
@@ -69,16 +68,20 @@ def edit_card(card_id):
         if card and card.user.id == current_user.id:
             card_form = BaseCardForm()
             if card_form.validate_on_submit():
-                card.side_1 = card_form.side_1.data
-                card.side_2 = card_form.side_2.data
-                card.is_active = card_form.is_active.data
-                card.tags = card_form.tags.data
-                card.cardtype_id = card_form.type.data
+                if card_form.button.data:
+                    card.side_1 = card_form.side_1.data
+                    card.side_2 = card_form.side_2.data
+                    card.is_active = card_form.is_active.data
+                    card.tags = card_form.tags.data
+                    card.cardtype_id = card_form.type.data
 
-                db.session.add(card)
-                db.session.commit()
-                flash("Карточка обновлена")
-
+                    db.session.add(card)
+                    db.session.commit()
+                    flash("Карточка обновлена")
+                if card_form.delete_button.data:
+                    deck = card.deck
+                    delete_card(card)
+                    return redirect(url_for("deck.deck_view", deck_id=deck.id))
             card_types = []
             # не придумал ничего, кроме как передать в список текущий
             # тип карточки первым в список. возможно у SelectField
@@ -99,6 +102,19 @@ def edit_card(card_id):
         flash("Это не ваша карточка")
         return redirect(url_for("index"))
 
+    except OperationalError:
+        flash(OPERATIONALERROR_TEXT)
+        return OPERATIONALERROR_TEXT
+
+
+@blueprint.route("/delete/<int:card_id>", methods=["POST", "GET"])
+@login_required
+def delete_card(card):
+    try:
+        if card and card.user.id == current_user.id:
+            db.session.delete(card)
+            db.session.commit()
+        flash("Это не ваша карточка")
     except OperationalError:
         flash(OPERATIONALERROR_TEXT)
         return OPERATIONALERROR_TEXT
