@@ -114,7 +114,8 @@ def delete_card(card):
         if card and card.user.id == current_user.id:
             db.session.delete(card)
             db.session.commit()
-        flash("Это не ваша карточка")
+        else:
+            flash("Это не ваша карточка")
     except OperationalError:
         flash(OPERATIONALERROR_TEXT)
         return OPERATIONALERROR_TEXT
