@@ -18,6 +18,8 @@ decks = [{"name": "Колода1", "comment": "Комментарий к кол�
          {"name": "Колода3", "comment": "Комментарий к колоде3", "user_id": 2}]
 
 
+cards = [{"side_1": "1", "side_2": "1", "deck_id": "1", "is_cative": True, "tags": "tags_for_test", "cardtype_id": "1", "user_id": "1"}]
+
 
 if __name__ == "__main__":
 

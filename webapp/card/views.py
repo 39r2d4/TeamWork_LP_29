@@ -14,6 +14,18 @@ from webapp.config import OPERATIONALERROR_TEXT
 blueprint = Blueprint('card', __name__, url_prefix='/cards')
 
 
+def delete_card(card):
+    try:
+        if card and card.user.id == current_user.id:
+            db.session.delete(card)
+            db.session.commit()
+        else:
+            flash("Это не ваша карточка")
+    except OperationalError:
+        flash(OPERATIONALERROR_TEXT)
+        return OPERATIONALERROR_TEXT
+
+
 @blueprint.route("/new", methods=["POST", "GET"])
 @login_required
 def create_card():
@@ -78,9 +90,11 @@ def edit_card(card_id):
                     db.session.add(card)
                     db.session.commit()
                     flash("Карточка обновлена")
+
                 if card_form.delete_button.data:
                     deck = card.deck
                     delete_card(card)
+                    flash("Карточка удалена")
                     return redirect(url_for("deck.deck_view", deck_id=deck.id))
             card_types = []
             # не придумал ничего, кроме как передать в список текущий
@@ -107,15 +121,3 @@ def edit_card(card_id):
         return OPERATIONALERROR_TEXT
 
 
-@blueprint.route("/delete/<int:card_id>", methods=["POST", "GET"])
-@login_required
-def delete_card(card):
-    try:
-        if card and card.user.id == current_user.id:
-            db.session.delete(card)
-            db.session.commit()
-        else:
-            flash("Это не ваша карточка")
-    except OperationalError:
-        flash(OPERATIONALERROR_TEXT)
-        return OPERATIONALERROR_TEXT
