@@ -5,10 +5,11 @@ from flask_login import current_user, login_required
 from sqlalchemy.exc import OperationalError
 
 
-from webapp.card.forms import BaseCardForm, NewCardForm
+from webapp.card.forms import BaseCardForm, CardsFromFile, NewCardForm 
 from webapp.model import db
 from webapp.card.models import Card, CardType
 from webapp.deck.views import create_list_of_decks
+from werkzeug.utils import secure_filename
 
 from webapp.config import OPERATIONALERROR_TEXT
 blueprint = Blueprint('card', __name__, url_prefix='/cards')
@@ -31,6 +32,7 @@ def delete_card(card):
 def create_card():
     try:
         card_form = NewCardForm()
+        cards_from_file = CardsFromFile()
         if card_form.validate_on_submit():
             now = datetime.now().date()
             new_card = Card(
@@ -65,7 +67,7 @@ def create_card():
         card_form.deck.choices = decks
         card_form.type.choices = card_types
 
-        return render_template("card/add_new_card_form.html", card_form=card_form, decks=create_list_of_decks(), page_title='создание карточки')
+        return render_template("card/add_new_card_form.html", card_form=card_form, decks=create_list_of_decks(), cards_from_file=cards_from_file , page_title='создание карточки')
 
     except OperationalError:
         flash(OPERATIONALERROR_TEXT)
@@ -121,3 +123,9 @@ def edit_card(card_id):
         return OPERATIONALERROR_TEXT
 
 
+@blueprint.route("/from_file", methods=["POST"])
+@login_required
+def lad_cards_from_file():
+    cards_from_file = CardsFromFile()
+    print(cards_from_file.file_with_cards.data.filename)
+    return redirect(url_for("card.create_card"))

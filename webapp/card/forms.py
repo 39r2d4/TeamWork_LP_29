@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField, BooleanField, SelectField
+from wtforms import StringField, SubmitField, TextAreaField, BooleanField, SelectField, FileField
 from wtforms.validators import DataRequired
 
 
@@ -20,3 +20,8 @@ class BaseCardForm(FlaskForm):
 
 class NewCardForm(BaseCardForm):
     deck = SelectField("Колода", choices=[], coerce=int, render_kw={"class": "form-control"}, validate_choice=False)  #передавать в форму список колод на выбор
+
+
+class CardsFromFile(FlaskForm):
+   file_with_cards = FileField('Cards File', validators=[DataRequired()])
+   button = SubmitField("Загрузить", render_kw={"class": "btn btn-primary"})
