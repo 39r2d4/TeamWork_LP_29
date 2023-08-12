@@ -2,9 +2,12 @@ from datetime import datetime
 
 from flask import Blueprint, render_template, flash, url_for, redirect
 from flask_login import current_user, login_required
-from sqlalchemy.exc import OperationalError
+from sqlalchemy.exc import OperationalError, SQLAlchemyError
 
 from openpyxl import load_workbook, Workbook
+from openpyxl.utils.exceptions import InvalidFileException
+
+from zipfile import BadZipFile
 
 from webapp.card.forms import BaseCardForm, CardsFromFile, NewCardForm 
 from webapp.model import db
@@ -132,42 +135,47 @@ def edit_card(card_id):
 @login_required
 def lad_cards_from_file():
     cards_from_file = CardsFromFile()
-    print()
-    file_name = cards_from_file.file_with_cards.data.filename 
-    if file_name.split(".")[-1] in ["xlsx", "xls"]:
-        try:
-            workbook = load_workbook(filename=cards_from_file.file_with_cards.data)
-            ws = workbook.active
+    if card_form.validate_on_submit():
+        file_name = cards_from_file.file_with_cards.data.filename 
 
-            #cards = [{"side_1": "1", "side_2": "1", "deck_id": "1", "is_cative": True, "tags": "tags_for_test", "cardtype_id": "1", "user_id": "1"}]
-            cards_list = []
-            now = datetime.now().date()
-            for row in ws.rows:
-                data_from_row = []
-                for cell in row:
-                    data_from_row.append(cell.value)
-                card = {"side_1": data_from_row[0], 
-                        "side_2": data_from_row[1], 
-                        "deck_id": cards_from_file.deck.data, 
-                        "is_active": True, 
-                        "tags": "card from file",
-                        "cardtype_id": "4", 
-                        "user_id": current_user.id,
-                        "weights": 2.5,
-                        "inter_repetition_interval": 0,
-                        "successfully_count": 0,
-                        "last_repetition": now,
-                        "next_repetition": now
-                }
-                cards_list.append(card)
+        if file_name.split(".")[-1] in ["xlsx", "xls"]:
+            try:
+                workbook = load_workbook(filename=cards_from_file.file_with_cards.data)
+                ws = workbook.active
 
-            db.session.bulk_insert_mappings(Card, cards_list, return_defaults=True)
-            db.session.commit()
+                now = datetime.now().date()
+                cards_list = []
 
+                for row in ws.rows:
+                    data_from_row = []
+                    for cell in row:
+                        data_from_row.append(cell.value)
+                    card = {"side_1": data_from_row[0], 
+                            "side_2": data_from_row[1], 
+                            "deck_id": cards_from_file.deck.data, 
+                            "is_active": True, 
+                            "tags": "card from file",
+                            "cardtype_id": "4", 
+                            "user_id": current_user.id,
+                            "weights": 2.5,
+                            "inter_repetition_interval": 0,
+                            "successfully_count": 0,
+                            "last_repetition": now,
+                            "next_repetition": now
+                    }
+                    cards_list.append(card)
 
-        except(ZeroDivisionError):
-            return "file parsing error"
-        return "ok"
+                db.session.bulk_insert_mappings(Card, cards_list, return_defaults=True)
+                db.session.commit()
+                flash("Карточки успешно созданы", "info")
+
+            except(SQLAlchemyError):
+                flash("Ошибка записи данных", "error")
+            except(BadZipFile, InvalidFileException):
+                flash("Ошибка чтения файла", "error")
+        else:
+            flash("Файл не xls | xlsx", "warning")
     else:
-        return "ff"
+        flash("Ошибка в заполнении формы", "error")    
+    return(redirect(url_for("card.create_card")))
     #return redirect(url_for("card.create_card"))
