@@ -11,7 +11,7 @@ class Deck(db.Model):
 
     user: db.Mapped["User"] = db.relationship(back_populates="deck")
     card: db.Mapped[list["Card"]] = db.relationship(back_populates="deck",
-                                                    cascade='save-update, merge, delete')
+                                                    cascade='all, delete')
 
     def __repr__(self):
         return f"Deck id: {self.id}, name: {self.name}"

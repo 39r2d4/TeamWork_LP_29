@@ -36,6 +36,10 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Отмена</button>
+                            <form action="" method="POST">
+                            {{ deck_form.hidden_tag() }}
+                            {{ deck_form.delete_button() }}
+                            </form>
                         </div>
                     </div>
                 </div>
