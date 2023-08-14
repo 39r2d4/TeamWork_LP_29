@@ -15,7 +15,7 @@ class BaseCardForm(FlaskForm):
     tags = StringField("Ключевые слова", validators=[DataRequired()], render_kw={"class": "form-control"})
     type = SelectField("Тип", choices=[], coerce=int, render_kw={"class": "form-control"}, validate_choice=False)  # !!!
     button = SubmitField("Сохранить", render_kw={"class": "btn btn-primary"})
-    delete_button = SubmitField("Удалить", render_kw={"class": "btn btn-danger", "data-bs-dismiss": "modal"})
+    delete_button = SubmitField("Удалить в любом случае", render_kw={"class": "btn btn-danger", "data-bs-dismiss": "modal"})
 
 
 class NewCardForm(BaseCardForm):
