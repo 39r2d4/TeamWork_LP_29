@@ -11,3 +11,4 @@ class DeckForm(FlaskForm):
 
 class DeckDeleteForm(FlaskForm):
     delete_button = SubmitField("Удалить в любом случае", render_kw={"class": "btn btn-danger", "data-bs-dismiss": "modal"})
+    
