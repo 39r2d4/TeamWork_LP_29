@@ -18,15 +18,32 @@
             </button>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="#">Редактировать колоду</a></li>
-                <li>
-                    <hr class="dropdown-divider">
-                </li>
                 <li><a class="dropdown-item" href="#">Изменить конфигурация</a></li>
-                <li>
-                    <hr class="dropdown-divider">
-                </li>
                 <li><a class="dropdown-item" href="#">Статистика</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><button class="btn dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Удалить колоду</button></li>
             </ul>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Внимание!</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            После того, как вы удалите колоду всё ее содержимое будет безвозвратно утеряна
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Отмена</button>
+                            <form action="" method="POST">
+                            {{ deck_form.hidden_tag() }}
+                            {{ deck_form.delete_button() }}
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="card-footer text-body-secondary">
