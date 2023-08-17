@@ -72,7 +72,9 @@ def create_card():
 
         card_form.deck.choices = decks
         card_form.type.choices = card_types
+
         cards_from_file.deck.choices = decks
+        cards_from_file.type.choices = card_types
 
 
         return render_template("card/add_new_card_form.html", card_form=card_form,  cards_from_file=cards_from_file , page_title='создание карточки')# откуда тут взялось decks=create_list_of_decks()?
@@ -133,9 +135,9 @@ def edit_card(card_id):
 #Пока пихаем все в одну функцию, потом уже разнести
 @blueprint.route("/from_file", methods=["POST"])
 @login_required
-def lad_cards_from_file():
+def load_cards_from_file():
     cards_from_file = CardsFromFile()
-    if card_form.validate_on_submit():
+    if cards_from_file.validate_on_submit():
         file_name = cards_from_file.file_with_cards.data.filename 
 
         if file_name.split(".")[-1] in ["xlsx", "xls"]:
@@ -155,7 +157,7 @@ def lad_cards_from_file():
                             "deck_id": cards_from_file.deck.data, 
                             "is_active": True, 
                             "tags": "card from file",
-                            "cardtype_id": "4", 
+                            "cardtype_id": cards_from_file.type.data, 
                             "user_id": current_user.id,
                             "weights": 2.5,
                             "inter_repetition_interval": 0,
@@ -165,6 +167,7 @@ def lad_cards_from_file():
                     }
                     cards_list.append(card)
 
+                cards_list.pop(0)
                 db.session.bulk_insert_mappings(Card, cards_list, return_defaults=True)
                 db.session.commit()
                 flash("Карточки успешно созданы", "info")

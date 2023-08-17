@@ -23,7 +23,8 @@ class NewCardForm(BaseCardForm):
 
 
 class CardsFromFile(FlaskForm):
-   file_with_cards = FileField('Cards File', validators=[DataRequired()])
-   type = SelectField("Тип", choices=[], coerce=int, render_kw={"class": "form-control"}, validate_choice=False)
-   deck = SelectField("Колода", choices=[], coerce=int, render_kw={"class": "form-control"}, validate_choice=False) 
-   button = SubmitField("Загрузить", render_kw={"class": "btn btn-primary"})
+    file_with_cards = FileField('Cards File', validators=[DataRequired()])
+    type = SelectField("Тип", choices=[], coerce=int, render_kw={"class": "form-control"}, validate_choice=False)
+    deck = SelectField("Колода", choices=[], coerce=int, render_kw={"class": "form-control"}, validate_choice=False)
+    type = SelectField("Тип", choices=[], coerce=int, render_kw={"class": "form-control"}, validate_choice=False) 
+    button = SubmitField("Загрузить", render_kw={"class": "btn btn-primary"})
