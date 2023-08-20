@@ -29,6 +29,34 @@ def delete_card(card):
     except OperationalError:
         flash(OPERATIONALERROR_TEXT)
         return OPERATIONALERROR_TEXT
+    
+
+# стоит подумать передавать форму целиком или данные из формы    
+def cards_list_from_workbook(workbook, data_from_form):
+    now = datetime.now().date()
+    cards_list = []
+
+    for row in workbook.rows:
+        data_from_row = []
+        for cell in row:
+            data_from_row.append(cell.value)
+        card = {"side_1": data_from_row[0], 
+                "side_2": data_from_row[1], 
+                "deck_id": data_from_form["deck_id"], 
+                "is_active": True, 
+                "tags": "card from file",
+                "cardtype_id": data_from_form["cardtype_id"], 
+                "user_id": current_user.id,
+                "weights": 2.5,
+                "inter_repetition_interval": 0,
+                "successfully_count": 0,
+                "last_repetition": now,
+                "next_repetition": now
+        }
+        cards_list.append(card)
+    cards_list.pop(0)
+    return cards_list
+
 
 
 @blueprint.route("/new", methods=["POST", "GET"])
@@ -144,30 +172,11 @@ def load_cards_from_file():
             try:
                 workbook = load_workbook(filename=cards_from_file.file_with_cards.data)
                 ws = workbook.active
+                
+                date_from_from = {"cardtype_id": cards_from_file.type.data, "deck_id": cards_from_file.deck.data}
 
-                now = datetime.now().date()
-                cards_list = []
+                cards_list = cards_list_from_workbook(ws, date_from_from)
 
-                for row in ws.rows:
-                    data_from_row = []
-                    for cell in row:
-                        data_from_row.append(cell.value)
-                    card = {"side_1": data_from_row[0], 
-                            "side_2": data_from_row[1], 
-                            "deck_id": cards_from_file.deck.data, 
-                            "is_active": True, 
-                            "tags": "card from file",
-                            "cardtype_id": cards_from_file.type.data, 
-                            "user_id": current_user.id,
-                            "weights": 2.5,
-                            "inter_repetition_interval": 0,
-                            "successfully_count": 0,
-                            "last_repetition": now,
-                            "next_repetition": now
-                    }
-                    cards_list.append(card)
-
-                cards_list.pop(0)
                 db.session.bulk_insert_mappings(Card, cards_list, return_defaults=True)
                 db.session.commit()
                 flash("Карточки успешно созданы", "info")
@@ -181,4 +190,3 @@ def load_cards_from_file():
     else:
         flash("Ошибка в заполнении формы", "error")    
     return(redirect(url_for("card.create_card")))
-    #return redirect(url_for("card.create_card"))

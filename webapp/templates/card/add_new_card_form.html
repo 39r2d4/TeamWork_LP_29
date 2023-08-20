@@ -31,8 +31,10 @@
         </p>
 </div>
 </form>
-
-<div class="d-flex justify-content-center"> <!-- Modal -->
+<div>
+    <p></p>
+</div>
+<div class="d-flex justify-content-evenly"> <!-- Modal -->
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Добавить карточки из файла
     </button>
@@ -54,7 +56,6 @@
                         {{ cards_from_file.hidden_tag() }}
                         {{ cards_from_file.file_with_cards.label }}
                         {{ cards_from_file.file_with_cards() }}
-
                         {{ cards_from_file.deck() }}
                         {{ cards_from_file.type.label }}
                         {{ cards_from_file.type() }}
