@@ -15,7 +15,7 @@ def login():
     try:
         if request.method == "GET":
             login_form = LoginForm()
-            return render_template("/user/login.html", form=login_form)
+            return render_template("/user/login.html", form=login_form, page_title='авторизация')
 
         elif request.method == "POST":  # переделать просто на validate_on_submit()
             login_form = LoginForm()
