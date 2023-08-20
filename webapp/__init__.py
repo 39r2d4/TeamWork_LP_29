@@ -50,6 +50,7 @@ def create_app(config_file=None):
                     deks_to_template = deks_to_template[:5]
 
                 return render_template("index.html", decks=deks_to_template, page_title='домашняя страница')
+
             return render_template("index.html")
         except OperationalError:
             flash(OPERATIONALERROR_TEXT)
