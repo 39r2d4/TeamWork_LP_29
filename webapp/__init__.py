@@ -2,7 +2,12 @@ from flask import Flask, render_template, flash
 from flask_login import LoginManager, current_user
 from flask_migrate import Migrate
 from sqlalchemy.exc import OperationalError
-from webapp.settings import DATABASE_URI, SECRET_KEY
+
+import sys
+sys.path.append(/etc/secrets/")
+
+from settings import DATABASE_URI, SECRET_KEY
+
 
 from webapp.model import db
 from webapp.user.models import User
@@ -14,6 +19,7 @@ from webapp.deck.views import blueprint as deck_blueprint
 from webapp.card.views import blueprint as card_blueprint
 from webapp.study.views import blueprint as study_blueprint
 from webapp.deck.views import create_list_of_decks
+
 
 
 def create_app(config_file=None):
