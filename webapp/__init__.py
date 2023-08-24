@@ -4,7 +4,7 @@ from flask_migrate import Migrate
 from sqlalchemy.exc import OperationalError
 
 import sys
-sys.path.append(/etc/secrets/")
+sys.path.append("/etc/secrets/")
 
 from settings import DATABASE_URI, SECRET_KEY
 
